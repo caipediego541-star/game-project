@@ -10,3 +10,15 @@ class Game:
 
         #reloj del juego
         self.clock=pygame.time.Clock()
+    def run(self):
+        running = True
+        while running: 
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+            pygame.display.flip()
+            self.clock.tick(config.FPS)
+        pygame.quit()
+   
+
+

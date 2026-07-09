@@ -5,3 +5,5 @@ __pycache__/
 *.pyc
 Tomas
 .gitignore
+SerenaPygame
+seed.sql

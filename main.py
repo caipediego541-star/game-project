@@ -9,9 +9,6 @@ def main():
     juego.run()
     print("Iniciando el juego...")
     
-    
-
-
 
 if __name__ == "__main__":
     main()

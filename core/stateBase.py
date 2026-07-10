@@ -1,8 +1,8 @@
 class State:
     """ Clase base para todos los estados del juego"""
 
-    def __init__(self):
-        pass
+    def __init__(self, game):
+        self.game = game
     def handle_events(self,events):
         """Procesa los eventos del teclado, mouse, entre otros"""
         pass

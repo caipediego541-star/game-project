@@ -1,0 +1,1 @@
+IMAGES= {"menu_background": "assets/images/MainMenuFondo.png"}

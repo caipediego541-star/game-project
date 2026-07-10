@@ -1,5 +1,6 @@
 import pygame
 import config
+from utils.resource_loader import IMAGES
 from core.resource_manager import ResourceManager
 from core.state_manager import StateManager
 from patterns.state.mainMenuState import MainMenuState
@@ -12,15 +13,16 @@ class Game:
     def __init__(self):
         pygame.init()
         #creamos la ventana usando las variables de la configuración
+        self.game_screen= pygame.Surface((config.ANCHO, config.ALTO))
         self.screen = pygame.display.set_mode((config.ANCHO,config.ALTO), pygame.RESIZABLE)
+
         #titulo de la ventana
         pygame.display.set_caption(config.TITULO)
 
         #inicializamos el ResourceManager
         self.resource_manager = ResourceManager()
-        self.resource_manager.load_image("fondo_prueba", "assets/images/imagen_prueba.png")
-
-
+        self.cargar_recursos()
+        
         #inicializamos el StateManager
         self.state_manager = StateManager()
         self.state_manager.set_state(MainMenuState(self))
@@ -78,5 +80,9 @@ class Game:
     def ajustar_fondo(self):
         ancho_ventana, alto_ventana = self.screen.get_size()
         self.fondo = pygame.transform.scale(self.fondo, (ancho_ventana, alto_ventana))
+    
+    def cargar_recursos(self):
+        for nombre, direccion in IMAGES.items():
+            self.resource_manager.load_image(nombre, direccion)
 
 

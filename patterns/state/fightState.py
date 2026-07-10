@@ -1,4 +1,4 @@
-from core.stateBase import State
+from patterns.state.stateBase import State
 import pygame
 
 class FightState(State):

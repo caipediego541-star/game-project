@@ -10,7 +10,7 @@ DB_USER=os.getenv("DB_USER")
 DB_PASSWORD=os.getenv("DB_PASSWORD")
 
 # configurar juego
-ANCHO = 800
-ALTO = 600
+ANCHO = 1280
+ALTO = 720
 FPS = 60
 TITULO = "Game Project"

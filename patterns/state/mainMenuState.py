@@ -1,19 +1,42 @@
-from core.stateBase import State
 import pygame
+from patterns.state.stateBase import State
+from utils.helpers import scale_image
+
+
 class MainMenuState(State):
-    """Estado del menú principal"""
+
     def __init__(self, game):
-        super().__init__(game)
+
+        self.game = game
+
+        self.background = (
+            self.game.resource_manager.get_image(
+                "menu_background"
+            )
+        )
 
     def handle_events(self, events):
-        """Maneja los eventos del menu principal"""
-        pass
+
+        for event in events:
+            if event.type == pygame.QUIT:
+                self.game.running = False
+
+
     def update(self):
-        """Actualiza la lógica del menú principal"""
         pass
-    def draw(self,screen):
-        """Dibuja el menu principal"""
-        screen.fill((30,30,30))
-        font=pygame.font.SysFont("Arial",48)
-        text=font.render("MENU PRINCIPAL", True,(255,255,255))
-        screen.blit(text,(180,100))
+
+
+    def draw(self, screen):
+
+        fondo = scale_image(
+            self.background,
+            screen
+        )
+
+        x = (screen.get_width() - fondo.get_width()) // 2
+        y = (screen.get_height() - fondo.get_height()) // 2
+
+        screen.blit(
+            fondo,
+            (x, y)
+        )

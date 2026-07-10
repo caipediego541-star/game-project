@@ -1,5 +1,5 @@
 import pygame
-from core.stateBase import State
+from patterns.state.stateBase import State
 
 class VictoryState(State):
     def __init__(self, game):

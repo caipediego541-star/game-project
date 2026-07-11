@@ -5,6 +5,9 @@ from entities.player import Player
 from patterns.command.player.move_left import MoveLeftCommand
 from patterns.command.player.move_right import MoveRightCommand
 from patterns.command.player.move_jump import JumpCommand
+from patterns.command.player.punch import PunchCommand
+from patterns.command.player.kick import KickCommand
+from patterns.command.player.block import BlockCommand
 
 
 class Game:
@@ -31,7 +34,13 @@ class Game:
 
             pygame.K_d: MoveRightCommand(self.player),
 
-            pygame.K_SPACE: JumpCommand(self.player)
+            pygame.K_SPACE: JumpCommand(self.player),
+
+            pygame.K_j: PunchCommand(self.player),
+            
+            pygame.K_k: KickCommand(self.player),
+            
+            pygame.K_l: BlockCommand(self.player)
         }
 
     def handle_events(self):
@@ -44,9 +53,13 @@ class Game:
 
             elif event.type == pygame.KEYDOWN:
 
-                if event.key == pygame.K_SPACE:
+                if event.key in(
+                    pygame.K_SPACE,
+                    pygame.K_j, # punch/puño
+                    pygame.K_k, # patada/kick
+                    pygame.K_l # block/defensa
+                    ):
                     self.commands[event.key].execute()
-
     # Movimiento continuo
         keys = pygame.key.get_pressed()
 
@@ -68,17 +81,12 @@ class Game:
         pygame.display.flip()
 
     def run(self):
-        running = True
-        while running: 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-            pygame.display.flip()
+        while self.running: 
             self.handle_events()
             self.update()
             self.draw()
             self.clock.tick(config.FPS)
-            
+              
         pygame.quit()
     
 

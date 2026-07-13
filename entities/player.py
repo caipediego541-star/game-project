@@ -9,9 +9,11 @@ class Player:
 
         self.width = 50
         self.height = 80
-
+        # Atributos del jugador base
+        self.health = 100
+        self.damage = 10
         self.speed = 10
-
+        # -----------------
         self.velocity_y = 0
         self.gravity = 1
         self.jumping = False

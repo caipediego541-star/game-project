@@ -42,15 +42,15 @@ class Game:
 
         # Fondo
         self.fondo = self.resource_manager.get_image("menu_background")
-        ancho, alto =self.ajustar_fondo()
-        self.escenario = Stage(alto, ancho)
+        self.ancho, self.alto =self.ajustar_fondo()
+        self.escenario = Stage(self.alto, self.ancho)
 
         # State Manager
         self.state_manager = StateManager()
         self.state_manager.set_state(MainMenuState(self))
 
         # Jugador
-        self.player = Player()
+        self.player = Player(self)
 
         # Comandos
         self.commands = {
@@ -134,7 +134,7 @@ class Game:
                     pygame.RESIZABLE
                 )
 
-                self.ajustar_fondo()
+                self.ancho, self.alto= self.ajustar_fondo()
 
         # Movimiento continuo
         keys = pygame.key.get_pressed()

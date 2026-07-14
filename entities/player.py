@@ -2,8 +2,8 @@ import pygame
 
 class Player:
 
-    def __init__(self):
-        
+    def __init__(self, game):
+        self.game= game
         self.x = 350
         self.y = 450
 
@@ -28,8 +28,8 @@ class Player:
 
     def move_right(self):
         self.x += self.speed
-        if self.x > 800 - self.width:
-            self.x = 800 - self.width
+        if self.x > self.game.ancho - self.width:
+            self.x = self.game.ancho - self.width
 
     def jump(self):
         if not self.jumping:

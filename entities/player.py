@@ -1,4 +1,7 @@
 import pygame
+from combat.hitbox import Hitbox
+from combat.hurtbox import Hurtbox
+
 
 class Player:
 
@@ -13,6 +16,13 @@ class Player:
         self.health = 100
         self.damage = 10
         self.speed = 10
+        #direccion del personaje
+        self.direction="right"
+        #hitbox del ataque
+        self.hitbox=Hitbox()
+        #hurtbox
+        #se cambia las medidas del personaje para que el impacto sea mas real y que no solo al rozar al personaje se genere el impacto (esto si colocamos las medidas exactas del personaje)
+        self.hurtbox=Hurtbox(self.x + 5,self.y + 5,self.width - 10 ,self.height - 10) 
         # -----------------
         self.velocity_y = 0
         self.gravity = 1
@@ -22,11 +32,13 @@ class Player:
         self.action_timer = 0
 
     def move_left(self):
+        self.direction="left"
         self.x -= self.speed
         if self.x < 0:
             self.x = 0
 
     def move_right(self):
+        self.direction="right"
         self.x += self.speed
         if self.x > 800 - self.width:
             self.x = 800 - self.width
@@ -96,6 +108,11 @@ class Player:
             # Piernas
             pygame.draw.rect(screen, black, (left_leg_x, leg_y, leg_width, leg_height))
             pygame.draw.rect(screen, black, (right_leg_x, leg_y, leg_width, leg_height))
+        #dibujar hitbox (solo para pruebas, es decir, para que nosotros veamos la simulacion de la hitbox)
+        self.hitbox.draw(screen)
+        #dibujamos hurtbox para simular, despues lo modificamos o eliminamos, cuando ya tengamos la animaciones
+        #fecha que se hizo 15-7-2026, lo comento aca para que sea más rapido de saber cuando se hizo
+        self.hurtbox.draw(screen)
 
     def update(self):
 
@@ -112,14 +129,24 @@ class Player:
             self.action_timer -= 1
             if self.action_timer == 0:
                 self.action = "idle"
+                self.hitbox.desactivate()
+        self.hurtbox.update(self.x + 5,self.y + 5,self.width - 10,self.height - 10)
 
     def punch(self):
         self.action = "punch"
         self.action_timer = 10
+        if self.direction=="right":
+            self.hitbox.activate(self.x + self.width,self.y + 25,25,10)
+        else:
+            self.hitbox.activate(self.x - 25,self.y + 25,25,10)
     
     def kick(self):
         self.action = "kick"
         self.action_timer = 10
+        if self.direction=="right":
+            self.hitbox.activate(self.x + self.width,self.y + 60,30,10)
+        else:
+            self.hitbox.activate(self.x - 30,self.y + 60,30,10)
     
     def block(self):
         self.action = "block"

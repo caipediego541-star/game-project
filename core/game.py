@@ -128,13 +128,10 @@ class Game:
                 print(f"Se soltó el botón del mouse: {event.button}")
 
             elif event.type == pygame.VIDEORESIZE:
-
                 self.screen = pygame.display.set_mode(
-                    (event.w, event.h),
+                    (event.w,event.h),
                     pygame.RESIZABLE
-                )
-
-                self.ancho, self.alto= self.ajustar_fondo()
+    )
 
         # Movimiento continuo
         keys = pygame.key.get_pressed()
@@ -145,6 +142,8 @@ class Game:
         if keys[pygame.K_d]:
             self.commands[pygame.K_d].execute()
 
+        if not keys[pygame.K_a] and not keys[pygame.K_d] and not self.player.jumping:
+            self.player.current_animation = "caminar"
         # Delegar eventos al estado actual
         self.state_manager.handle_events(events)
 
@@ -154,8 +153,39 @@ class Game:
         self.state_manager.update()
 
     def draw(self):
-        self.state_manager.draw(self.screen)
 
+        # Limpiar pantalla interna
+        self.game_screen.fill((0,0,0))
+        self.state_manager.draw(
+            self.game_screen
+        )
+
+
+        # Escalar todo el juego
+        scaled_game = self.scale_game()
+
+
+        # Centrar
+        x = (
+            self.screen.get_width()
+            - scaled_game.get_width()
+        ) // 2
+
+        y = (
+            self.screen.get_height()
+            - scaled_game.get_height()
+        ) // 2
+
+
+        # Limpiar ventana real
+        self.screen.fill((0,0,0))
+
+
+        # Dibujar juego escalado
+        self.screen.blit(
+            scaled_game,
+            (x,y)
+        )
 
     def ajustar_fondo(self):
 
@@ -171,3 +201,29 @@ class Game:
 
         for nombre, direccion in IMAGES.items():
             self.resource_manager.load_image(nombre, direccion)
+
+    def scale_game(self):
+
+        window_width, window_height = self.screen.get_size()
+
+        game_width = config.ANCHO
+        game_height = config.ALTO
+
+
+        scale = min(
+            window_width / game_width,
+            window_height / game_height
+        )
+
+
+        new_width = int(game_width * scale)
+        new_height = int(game_height * scale)
+
+
+        scaled = pygame.transform.scale(
+            self.game_screen,
+            (new_width, new_height)
+        )
+
+
+        return scaled

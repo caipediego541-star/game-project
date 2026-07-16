@@ -1,6 +1,7 @@
 from patterns.state.stateBase import State
 import pygame
-from utils.helpers import scale_image
+import config
+
 
 class FightState(State):
     def __init__(self, game):
@@ -14,17 +15,19 @@ class FightState(State):
 
     def draw(self, screen):
 
-        fondo = scale_image(
+        fondo = pygame.transform.scale(
             self.background,
-            screen
+            (
+                config.ANCHO,
+                config.ALTO
+            )
         )
 
-        x = (screen.get_width() - fondo.get_width()) // 2
-        y = (screen.get_height() - fondo.get_height()) // 2
 
         screen.blit(
             fondo,
-            (x, y)
+            (0,0)
         )
+
 
         self.game.player.draw(screen)

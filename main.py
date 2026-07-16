@@ -1,4 +1,3 @@
-from config import ANCHO, ALTO, FPS, TITULO
 from core.game import Game
 
 def main():

@@ -43,7 +43,7 @@ class Player:
         }
 
         self.facing_right = True
-        self.animations = self.game.resource_manager.load_character("belen")
+        self.animations = self.game.resource_manager.load_character("profe")
 
     def move_left(self):
 

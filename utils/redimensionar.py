@@ -1,7 +1,7 @@
 from PIL import Image
 import os
 
-carpeta = "assets/images/personajes/profe"
+carpeta = "assets/images/personajes/profe/patada"
 
 for raiz, _, archivos in os.walk(carpeta):
     for archivo in archivos:

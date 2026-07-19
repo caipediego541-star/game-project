@@ -30,4 +30,5 @@ class FightState(State):
         )
 
 
-        self.game.player.draw(screen)
+        self.game.player1.draw(screen)
+        self.game.player2.draw(screen)

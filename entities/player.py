@@ -5,14 +5,25 @@ from combat.hurtbox import Hurtbox
 
 class Player:
 
-    def __init__(self):
-        
-        self.x = 350
-        self.y = 450
+    def __init__(self, game, character, x, facing_right):
 
+        self.character= character
+        self.game = game
+        self.ground = 650
+
+        # Posición
+        self.x = x
+        self.y = self.ground
+
+        # Hitbox
         self.width = 50
         self.height = 80
-        # Atributos del jugador base
+
+        # Tamaño visual
+        self.sprite_width = 350
+        self.sprite_height = 350
+
+        # Stats
         self.health = 100
         self.damage = 10
         self.speed = 10
@@ -24,130 +35,236 @@ class Player:
         #se cambia las medidas del personaje para que el impacto sea mas real y que no solo al rozar al personaje se genere el impacto (esto si colocamos las medidas exactas del personaje)
         self.hurtbox=Hurtbox(self.x + 5,self.y + 5,self.width - 10 ,self.height - 10) 
         # -----------------
+
+        # Física
         self.velocity_y = 0
-        self.gravity = 1
+        self.gravity = 0.7
         self.jumping = False
-        self.ground = 450
-        self.action = "idle"
-        self.action_timer = 0
+
+        # Estado de acción
+        self.busy = False
+
+        # Animación
+        self.current_animation = "idle"
+        self.current_frame = 0
+        self.blocking = False
+
+        self.animation_speeds = {
+            "idle": 0.13,
+            "caminar": 0.2,
+            "saltar": 0.35,
+            "golpe": 0.2,
+            "patada": 0.3,
+            "cubrirse": 0.3
+        }
+
+        self.facing_right = facing_right
+
+        self.animations = self.game.resource_manager.load_character(character)
 
     def move_left(self):
         self.direction="left"
+
+        if self.busy:
+            return
+
         self.x -= self.speed
+
         if self.x < 0:
             self.x = 0
 
+        self.facing_right = False
+
+        if not self.jumping:
+            self.change_animation("caminar")
+
     def move_right(self):
         self.direction="right"
+
+        if self.busy:
+            return
+
         self.x += self.speed
-        if self.x > 800 - self.width:
-            self.x = 800 - self.width
+
+        if self.x > self.game.ancho - self.width:
+            self.x = self.game.ancho - self.width
+
+        self.facing_right = True
+
+        if not self.jumping:
+            self.change_animation("caminar")
 
     def jump(self):
+
+        if self.busy:
+            return
+
         if not self.jumping:
+
             self.velocity_y = -18
             self.jumping = True
 
-    def draw(self, screen):
-        # Colores
-        skin = (255, 220, 177)
-        red = (255, 0, 0)
-        black = (0, 0, 0)
-        # Cabeza
-        head_size = 20
-        head_x = self.x + 15
-        head_y = self.y
-        # Cuerpo
-        body_x = self.x + 10
-        body_y = self.y + 20
-        body_width = 30
-        body_height = 40
-        # Brazos
-        left_arm_x = self.x
-        right_arm_x = self.x + 40
-        arm_y = self.y + 25
-        arm_width = 10
-        arm_height = 30
-        # Piernas
-        left_leg_x = self.x + 15
-        right_leg_x = self.x + 30
-        leg_y = self.y + 60
-        leg_width = 8
-        leg_height = 25
-        # Cabeza
-        pygame.draw.rect(screen, skin, (head_x, head_y, head_size, head_size))
-        # Cuerpo
-        pygame.draw.rect(screen, red, (body_x, body_y, body_width, body_height))
-        if self.action == "idle":
-            # Brazos
-            pygame.draw.rect(screen, black, (left_arm_x, arm_y, arm_width, arm_height))
-            pygame.draw.rect(screen, black, (right_arm_x, arm_y, arm_width, arm_height))
-            # Piernas
-            pygame.draw.rect(screen, black, (left_leg_x, leg_y, leg_width, leg_height))
-            pygame.draw.rect(screen, black, (right_leg_x, leg_y, leg_width, leg_height))
-        elif self.action == "punch":
-            # Brazo izquierdo normal
-            pygame.draw.rect(screen, black, (left_arm_x, arm_y, arm_width, arm_height))
-            # Brazo derecho extendido
-            pygame.draw.rect(screen, black, (body_x + body_width, arm_y + 5, 25, 8))
-            # Piernas
-            pygame.draw.rect(screen, black, (left_leg_x, leg_y, leg_width, leg_height))
-            pygame.draw.rect(screen, black, (right_leg_x, leg_y, leg_width, leg_height))
-        elif self.action == "kick":
-            # Brazos normales
-            pygame.draw.rect(screen, black, (left_arm_x, arm_y, arm_width, arm_height))
-            pygame.draw.rect(screen, black, (right_arm_x, arm_y, arm_width, arm_height))
-            # Pierna izquierda normal
-            pygame.draw.rect(screen, black, (left_leg_x, leg_y, leg_width, leg_height))
-            # Pierna derecha extendida
-            pygame.draw.rect(screen, black, (right_leg_x, leg_y + 5, 25, 8))
-        elif self.action == "block":
-            # Brazos delante del cuerpo
-            pygame.draw.rect(screen, black, (body_x - 5, arm_y + 5, 40, 8))
-            pygame.draw.rect(screen, black, (body_x - 5, arm_y + 15, 40, 8))
-            # Piernas
-            pygame.draw.rect(screen, black, (left_leg_x, leg_y, leg_width, leg_height))
-            pygame.draw.rect(screen, black, (right_leg_x, leg_y, leg_width, leg_height))
-        #dibujar hitbox (solo para pruebas, es decir, para que nosotros veamos la simulacion de la hitbox)
-        self.hitbox.draw(screen)
-        #dibujamos hurtbox para simular, despues lo modificamos o eliminamos, cuando ya tengamos la animaciones
-        #fecha que se hizo 15-7-2026, lo comento aca para que sea más rapido de saber cuando se hizo
-        self.hurtbox.draw(screen)
+            self.change_animation("saltar")
 
+    def draw(self, screen):
+
+        frames = self.animations[self.current_animation]
+        image = frames[int(self.current_frame)]
+
+        if self.current_animation == "patada":
+            scale = 1.1
+        else:
+            scale = 1.0
+
+        width = int(self.sprite_width * scale)
+        height = int(self.sprite_height * scale)
+
+        image = pygame.transform.scale(
+            image,
+            (width, height)
+        )
+
+        if not self.facing_right:
+            image = pygame.transform.flip(
+                image,
+                True,
+                False
+            )
+
+        x = self.x - width // 2
+        y = self.y - height
+
+        screen.blit(
+            image,
+            (x, y)
+        )
+        
     def update(self):
 
+        self.update_animation()
+
+        # Física del salto
         if self.jumping:
 
             self.velocity_y += self.gravity
             self.y += self.velocity_y
 
             if self.y >= self.ground:
+
                 self.y = self.ground
                 self.velocity_y = 0
                 self.jumping = False
+
         if self.action_timer > 0:
             self.action_timer -= 1
             if self.action_timer == 0:
                 self.action = "idle"
                 self.hitbox.desactivate()
+
         self.hurtbox.update(self.x + 5,self.y + 5,self.width - 10,self.height - 10)
 
+        if not self.busy:
+                    self.change_animation("idle")
+
+
+    def update_animation(self):
+
+        frames = self.animations[self.current_animation]
+
+        speed = self.animation_speeds.get(
+            self.current_animation,
+            0.15
+        )
+
+        self.current_frame += speed
+
+        if self.current_animation == "saltar":
+
+            if self.current_frame >= len(frames):
+
+                self.current_frame = len(frames) - 1
+
+            return
+        
+        if self.current_animation == "cubrirse":
+
+            if self.current_frame >= len(frames):
+
+                if self.blocking:
+                    self.current_frame = len(frames) - 1
+                else:
+                    self.busy = False
+                    self.change_animation("idle")
+
+            return
+
+        if self.current_animation in (
+                "golpe",
+                "patada"
+            ):
+
+            if self.current_frame >= len(frames):
+
+                self.busy = False
+
+                if self.jumping:
+                    self.change_animation("saltar")
+                else:
+                    self.change_animation("idle")
+
+            return 
+
+        if self.current_frame >= len(frames):
+
+            self.current_frame = 0
+
+    def change_animation(self, animation):
+
+        if self.current_animation != animation:
+
+            self.current_animation = animation
+            self.current_frame = 0
+
+
     def punch(self):
-        self.action = "punch"
-        self.action_timer = 10
+
+        if self.busy:
+          return
+        
         if self.direction=="right":
             self.hitbox.activate(self.x + self.width,self.y + 25,25,10)
         else:
             self.hitbox.activate(self.x - 25,self.y + 25,25,10)
-    
+
+        self.busy = True
+        self.change_animation("golpe")
+
+
     def kick(self):
-        self.action = "kick"
-        self.action_timer = 10
+
+        if self.busy:
+           return
+        
         if self.direction=="right":
-            self.hitbox.activate(self.x + self.width,self.y + 60,30,10)
+            self.hitbox.activate(self.x + self.width,self.y + 25,25,10)
         else:
-            self.hitbox.activate(self.x - 30,self.y + 60,30,10)
-    
+            self.hitbox.activate(self.x - 25,self.y + 25,25,10)
+
+        self.busy = True
+        self.change_animation("patada")
+
     def block(self):
-        self.action = "block"
-        self.action_timer = 10
+
+        if self.busy:
+           return
+
+        self.busy = True
+        self.blocking = True
+        self.change_animation("cubrirse")
+
+    def stop_block(self):
+        self.blocking = False
+
+    def stop_move(self):
+        if not self.busy and not self.jumping:
+            self.change_animation("idle")

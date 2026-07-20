@@ -1,9 +1,12 @@
 from patterns.state.stateBase import State
 import pygame
+import config
+
 
 class FightState(State):
     def __init__(self, game):
         super().__init__(game)
+        self.background= self.game.resource_manager.get_image("fight_background1")
     def handle_events(self, events):
         return super().handle_events(events)
     
@@ -11,9 +14,21 @@ class FightState(State):
         pass
 
     def draw(self, screen):
-        screen.fill((0, 120, 0))
 
-        font = pygame.font.SysFont("Arial", 48)
-        text = font.render("FIGHT STATE", True, (255, 255, 255))
+        fondo = pygame.transform.scale(
+            self.background,
+            (
+                config.ANCHO,
+                config.ALTO
+            )
+        )
 
-        screen.blit(text, (180, 100))
+
+        screen.blit(
+            fondo,
+            (0,0)
+        )
+
+
+        self.game.player1.draw(screen)
+        self.game.player2.draw(screen)

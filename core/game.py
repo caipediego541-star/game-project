@@ -2,9 +2,9 @@ import pygame
 import config
 
 from utils.resource_loader import IMAGES
-from core.resource_manager import ResourceManager
+from managers.resource_manager import ResourceManager
 
-from core.state_manager import StateManager
+from managers.state_manager import StateManager
 from patterns.state.mainMenuState import MainMenuState
 from patterns.state.fightState import FightState
 from patterns.state.pauseState import PauseState
@@ -15,7 +15,9 @@ from patterns.factory.player.human_player_factory import HumanPlayerFactory
 
 from core.stage import Stage
 from core.control_config import ControlsConfig
-from core.input_manager import InputManager
+
+from managers.input_manager import InputManager
+from managers.combat_manager import CombatManager
 
 
 
@@ -63,6 +65,7 @@ class Game:
             False
         )
 
+        self.combat_manager= CombatManager()
 
         # Comandos
         
@@ -142,6 +145,7 @@ class Game:
         self.player1.update()
         self.player2.update()
 
+        self.combat_manager.check_collision(self.player1, self.player2)
         self.state_manager.update()
 
     def draw(self):

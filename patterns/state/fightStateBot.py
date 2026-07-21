@@ -3,7 +3,7 @@ import pygame
 import config
 
 
-class FightState(State):
+class FightStateBot(State):
     def __init__(self, game):
         super().__init__(game)
         self.background= self.game.resource_manager.get_image("fight_background1")
@@ -64,15 +64,13 @@ class FightState(State):
             )
         )
 
-
         screen.blit(
             fondo,
             (0,0)
         )
 
-
         self.game.player1.draw(screen)
         self.game.player2.draw(screen)
-    
         if self.game.hud:
             self.game.hud.draw()
+    

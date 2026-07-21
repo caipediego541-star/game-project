@@ -1,7 +1,7 @@
 import pygame
+from patterns.observer.observer import Observer
 
-
-class BarraVida:
+class BarraVida(Observer):
 
     def __init__(
         self,
@@ -14,7 +14,8 @@ class BarraVida:
     ):
 
         self.jugador = jugador
-
+        self.health = jugador.health.health
+        self.max_health = jugador.health.max_health
         self.x = x
         self.y = y
 
@@ -25,8 +26,8 @@ class BarraVida:
 
     def draw(self, screen):
         porcentaje = (
-            self.jugador.health /
-            self.jugador.max_health
+            self.health /
+            self.max_health
         )
 
         ancho_actual = self.max_width * porcentaje
@@ -56,3 +57,7 @@ class BarraVida:
                     self.height
                 )
             )
+
+    def on_notify(self, subject, event):
+        self.health = subject.health
+        self.max_health = subject.max_health

@@ -138,7 +138,8 @@ class Game:
                         TournamentState(self)
                     )
 
-            self.input_manager.manejar_evento(evento)
+            if isinstance(self.state_manager.current_state, FightState):
+                self.input_manager.manejar_evento(evento)
 
         self.state_manager.handle_events(eventos)
 

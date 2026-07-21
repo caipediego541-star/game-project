@@ -35,8 +35,11 @@ class HUD:
             height=40
         )
 
-        self.nombre_jugador1= self.game.player1.character
+        self.game.player1.health.add_observer(
+            self.barra_jugador1
+        )
 
+        self.nombre_jugador1= self.game.player1.character
 
         self.barra_jugador2 = BarraVida(
             jugador=self.game.player2,
@@ -46,7 +49,11 @@ class HUD:
             height=40,
             invertida=True
         )
-
+        
+        self.game.player2.health.add_observer(
+            self.barra_jugador2
+        )
+        
         self.nombre_jugador2= self.game.player2.character
 
 

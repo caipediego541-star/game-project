@@ -1,55 +1,45 @@
 import pygame
+
 from combat.hitbox import Hitbox
 from combat.hurtbox import Hurtbox
+from entities.player_health import PlayerHealth
+from entities.components.animation_controller import AnimationController
+from entities.components.movement_controller import MovementController
 
 
 class Player:
 
     def __init__(self, game, character, x, facing_right, profile_picture):
 
-        self.character= character
-        self.profile_picture= pygame.image.load(
+        self.character = character
+
+        self.profile_picture = pygame.image.load(
             profile_picture
         ).convert_alpha()
+
         self.game = game
         self.ground = 650
 
-        # Posición
         self.x = x
         self.y = self.ground
 
-        # Tamaño visual
         self.sprite_width = 350
         self.sprite_height = 350
 
-        self.width = self.sprite_width -20
+        self.width = self.sprite_width - 20
         self.height = self.sprite_height
 
         # Stats
-        self.health = 100
-        self.max_health= 100
+        self.health = PlayerHealth()
         self.damage = 10
         self.speed = 10
-        self.dead= False
-        self.victory= False
+        self.victory = False
         self.has_hit = False
-       
-        #hitbox del ataque
-        self.hitbox=Hitbox()
 
-        #hurtbox
-        # se cambia las medidas del personaje para que el impacto sea mas real y 
-        # que no solo al rozar al personaje se genere el impacto (esto si colocamos 
-        # las medidas exactas del personaje)
-        self.hurtbox = Hurtbox(
-            self.x - self.width // 2 + 30,
-            self.y - self.height + 10,
-            self.width - 120,
-            self.height - 30
-        )
-
-        # Configuración de las hitboxes de ataque
+        # Combate
+        self.hitbox = Hitbox()
         self.attack_hitboxes = {
+
             "golpe": {
                 "width": 90,
                 "height": 70,
@@ -58,6 +48,7 @@ class Player:
                 "start_frame": 3,
                 "end_frame": 5
             },
+
             "patada": {
                 "width": 120,
                 "height": 90,
@@ -67,86 +58,94 @@ class Player:
                 "end_frame": 7
             }
         }
+
+        # Hurtbox
+        self.hurtbox = Hurtbox(
+            self.x - self.width // 2 + 30,
+            self.y - self.height + 10,
+            self.width - 120,
+            self.height - 30
+        )
+
         # Física
-        self.velocity_y = 0
-        self.gravity = 0.7
-        self.jumping = False
-
-        # Estado de acción
+        self.movement = MovementController(
+            speed=self.speed,
+            gravity=0.7,
+            ground=self.ground
+        )
+        # Estado
         self.busy = False
-
-        # Animación
-        self.current_animation = "idle"
-        self.current_frame = 0
         self.blocking = False
 
-        self.animation_speeds = {
-            "idle": 0.13,
-            "caminar": 0.2,
-            "saltar": 0.35,
-            "golpe": 0.25,
-            "patada": 0.3,
-            "cubrirse": 0.3,
-            "recibir_golpe": 0.18,
-            "derrota": 0.18,
-            "victoria": 0.15
-        }
-
+        # Dirección
         self.facing_right = facing_right
-        self.animations = self.game.resource_manager.load_character(character)
+
+        # Animaciones
+        animations = self.game.resource_manager.load_character(
+            character
+        )
+        self.animation = AnimationController(
+            animations
+        )
 
     def move_left(self):
+
         if self.busy or self.is_finished():
             return
-
-        self.x -= self.speed
-
-        if self.x < 0:
-            self.x = 0
-
+        
+        self.movement.move_left(self)
         self.facing_right = False
 
-        if not self.jumping:
-            self.change_animation("caminar")
+
+        if not self.movement.jumping:
+            self.change_animation(
+                "caminar"
+            )
 
     def move_right(self):
+
         if self.busy or self.is_finished():
             return
-
-        self.x += self.speed
-        if self.x > self.game.ancho - self.width:
-            self.x = self.game.ancho - self.width
+        self.movement.move_right(self)
 
         self.facing_right = True
 
-        if not self.jumping:
-            self.change_animation("caminar")
+        if not self.movement.jumping:
+            self.change_animation(
+                "caminar"
+            )
+
+
 
     def jump(self):
 
         if self.busy or self.is_finished():
             return
 
-        if not self.jumping:
-            self.velocity_y = -18
-            self.jumping = True
-
-            self.change_animation("saltar")
+        if not self.movement.jumping:
+            self.movement.jump()
+            self.change_animation(
+                "saltar"
+            )
 
     def draw(self, screen):
 
-        frames = self.animations[self.current_animation]
-        image = frames[int(self.current_frame)]
+        image = self.animation.get_image()
 
-        if self.current_animation == "derrota":
-            scale_w= 1.6
-            scale_h= 1.2
+        if self.animation.get_current_animation() == "derrota":
+            scale_w = 1.6
+            scale_h = 1.2
         else:
-            scale_w = 1.0
-            scale_h = 1.0
+            scale_w = 1
+            scale_h = 1
 
-        width = int(self.sprite_width * scale_w)
-        height = int(self.sprite_height * scale_h)
+        width = int(
+            self.sprite_width * scale_w
+        )
+        
+        height = int(
+            self.sprite_height * scale_h
+        )
 
         image = pygame.transform.scale(
             image,
@@ -163,188 +162,173 @@ class Player:
         x = self.x - width // 2
         y = self.y - height
 
-        if self.current_animation== "derrota":
-            y = self.y - height + 15 
+        if self.animation.get_current_animation() == "derrota":
+            y = self.y - height + 15
 
         screen.blit(
             image,
             (x, y)
         )
-        
+
     def update(self):
 
-        self.update_animation()
+        termino = self.animation.update(
+            self.blocking
+        )
+        if termino:
+            self.animation_finished()
 
-        # Física del salto
-        if self.jumping:
-
-            self.velocity_y += self.gravity
-            self.y += self.velocity_y
-
-            if self.y >= self.ground:
-
-                self.y = self.ground
-                self.velocity_y = 0
-                self.jumping = False
+        self.movement.update(self)
 
         self.hurtbox.update(
             self.x - self.width // 2 + 40,
             self.y - self.height + 10,
-            self.width - 130 ,
-            self.height -20
+            self.width - 130,
+            self.height - 20
         )
 
+        self.update_attack_hitbox()
 
-    def update_animation(self):
-        frames = self.animations[self.current_animation]
-        speed = self.animation_speeds.get(
-            self.current_animation,
-            0.15
+    def update_attack_hitbox(self):
+        animation = self.animation.get_current_animation()
+
+        if animation not in ["golpe", "patada"]:
+            self.hitbox.desactivar()
+            return
+
+        frame_actual = int(
+            self.animation.current_frame
         )
 
-        self.current_frame += speed
+        datos = self.attack_hitboxes[
+            animation
+        ]
 
-        if self.current_animation == "saltar":
-            if self.current_frame >= len(frames):
-                self.current_frame = len(frames) - 1
-            return
-        
-        if self.current_animation == "cubrirse":
-            if self.current_frame >= len(frames):
-                if self.blocking:
-                    self.current_frame = len(frames) - 1
-                else:
-                    self.busy = False
-                    self.change_animation("idle")
+        if datos["start_frame"] <= frame_actual <= datos["end_frame"]:
+            ancho = datos["width"]
+            alto = datos["height"]
+            offset_x = datos["offset_x"]
+            offset_y = datos["offset_y"]
 
-            return
-        
-        if self.current_animation in ["victoria", "derrota"]:
-            if self.current_frame >= len(frames):
-                self.current_frame = len(frames) - 1
+            if self.facing_right:
+                hitbox_x = self.x + offset_x
+            else:
+                hitbox_x = self.x - offset_x - ancho
+            hitbox_y = self.y + offset_y
+
+            self.hitbox.activar(
+                hitbox_x,
+                hitbox_y,
+                ancho,
+                alto
+            )
+        else:
+            self.hitbox.desactivar()
 
 
-            return
+    def animation_finished(self):
+        current = self.animation.get_current_animation()
 
-        if self.current_animation in (
+        if current in [
             "golpe",
             "patada",
             "recibir_golpe"
-        ):
+        ]:
+            self.hitbox.desactivar()
+            self.busy = False
+            if self.movement.jumping:
+                self.change_animation(
+                    "saltar"
+                )
+            else:
+                self.change_animation(
+                    "idle"
+                )
 
-            frame_actual = int(self.current_frame)
-
-            if self.current_animation != "recibir_golpe":
-                datos = self.attack_hitboxes[self.current_animation]
-                if datos["start_frame"] <= frame_actual <= datos["end_frame"]:
-                    ancho = datos["width"]
-                    alto = datos["height"]
-                    offset_x = datos["offset_x"]
-                    offset_y = datos["offset_y"]
-
-                    if self.facing_right:
-                        hitbox_x = self.x + offset_x
-                    else:
-                        hitbox_x = self.x - offset_x - ancho
-
-                    hitbox_y = self.y + offset_y
-
-                    self.hitbox.activar(
-                        hitbox_x,
-                        hitbox_y,
-                        ancho,
-                        alto
-                    )
-
-                else:
-                    self.hitbox.desactivar()
-
-            if self.current_frame >= len(frames):
-
-                self.hitbox.desactivar()
-                self.busy = False
-
-                if self.jumping:
-                    self.change_animation("saltar")
-                else:
-                    self.change_animation("idle")
-
-            return
-        if self.current_frame >= len(frames):
-
-            self.current_frame = 0
+        elif current == "cubrirse":
+            self.busy = False
+            self.change_animation(
+                "idle"
+            )
 
     def change_animation(self, animation):
-        if self.current_animation in ["victoria", "derrota"]:
-                return
-
-        if self.current_animation != animation:
-
-            self.current_animation = animation
-            self.current_frame = 0
-
+        self.animation.change_animation(
+            animation
+        )
 
     def punch(self):
+
         if self.busy or self.is_finished():
             return
-        
-        self.has_hit = False
 
+        self.has_hit = False
         self.busy = True
-        self.change_animation("golpe")
+        self.change_animation(
+            "golpe"
+        )
+
 
 
     def kick(self):
         if self.busy or self.is_finished():
-           return
-        
+            return
+
         self.has_hit = False
-        
         self.busy = True
-        self.change_animation("patada")
-   
+        self.change_animation(
+            "patada"
+        )
+
 
 
     def block(self):
+
         if self.busy or self.is_finished():
-           return
+            return
 
         self.busy = True
         self.blocking = True
-        self.change_animation("cubrirse")
+        self.change_animation(
+            "cubrirse"
+        )
 
     def stop_block(self):
         self.blocking = False
 
+
+
     def stop_move(self):
-        if not self.busy and not self.jumping:
-            self.change_animation("idle")
+        if not self.busy and not self.movement.jumping:
+            self.change_animation(
+                "idle"
+            )
 
     def receive_damage(self, damage):
-        if self.dead:
-            return
+        damage, change = self.health.receive_damage(
+            damage,
+            self.blocking
+        )
 
-        if self.blocking:
-            damage *= 0.5
-            self.health -= damage
-            return damage
+        if damage == 0:
+            return 0
 
-        self.health -= damage
-        self.change_animation("recibir_golpe")
-
-        if self.health <= 0:
-            self.health = 0
-            self.dead = True
+        if self.health.dead:
             self.busy = True
             self.blocking = False
 
-            self.change_animation("derrota")
-
+            self.change_animation(
+                "derrota"
+            )
+        else:
+            if change:
+                self.change_animation(
+                    "recibir_golpe"
+                )
         return damage
 
     def is_finished(self):
 
-        return self.current_animation in [
+        return self.animation.get_current_animation() in [
             "victoria",
             "derrota"
         ]

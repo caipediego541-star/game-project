@@ -24,7 +24,7 @@ class FightState(State):
         jugador2 = self.game.player2
 
         if not self.combate_terminado:
-            if jugador1.dead:
+            if jugador1.health.dead:
                 self.combate_terminado = True
                 self.ganador = jugador2
                 jugador2.busy = True
@@ -33,7 +33,7 @@ class FightState(State):
 
                 jugador1.change_animation("derrota")
 
-            elif jugador2.dead:
+            elif jugador2.health.dead:
 
                 self.combate_terminado = True
                 self.ganador = jugador1

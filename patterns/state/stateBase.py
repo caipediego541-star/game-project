@@ -1,3 +1,4 @@
+
 class State:
     """ Clase base para todos los estados del juego"""
 

@@ -93,7 +93,6 @@ class HUD:
             (20, 20)
         )
 
-
         # HUD derecha
         hud_flip = pygame.transform.flip(
             self.hud_image,

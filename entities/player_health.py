@@ -19,7 +19,7 @@ class PlayerHealth(Subject):
         
         if blocking:
             change= False
-            damage *= 0.5
+            damage *= 0.8
 
         self.health -= damage
 

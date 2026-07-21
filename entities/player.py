@@ -294,8 +294,7 @@ class Player:
 
     def stop_block(self):
         self.blocking = False
-
-
+        self.busy = False
 
     def stop_move(self):
         if not self.busy and not self.movement.jumping:

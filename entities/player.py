@@ -5,9 +5,12 @@ from combat.hurtbox import Hurtbox
 
 class Player:
 
-    def __init__(self, game, character, x, facing_right):
+    def __init__(self, game, character, x, facing_right, profile_picture):
 
         self.character= character
+        self.profile_picture= pygame.image.load(
+            profile_picture
+        ).convert_alpha()
         self.game = game
         self.ground = 650
 
@@ -23,7 +26,8 @@ class Player:
         self.height = self.sprite_height
 
         # Stats
-        self.health = 20
+        self.health = 100
+        self.max_health= 100
         self.damage = 10
         self.speed = 10
         self.dead= False
@@ -84,7 +88,7 @@ class Player:
             "patada": 0.3,
             "cubrirse": 0.3,
             "recibir_golpe": 0.18,
-            "derrota": 0.15,
+            "derrota": 0.18,
             "victoria": 0.15
         }
 
@@ -135,8 +139,8 @@ class Player:
         image = frames[int(self.current_frame)]
 
         if self.current_animation == "derrota":
-            scale_w= 1.5
-            scale_h= 1.0
+            scale_w= 1.6
+            scale_h= 1.2
         else:
             scale_w = 1.0
             scale_h = 1.0

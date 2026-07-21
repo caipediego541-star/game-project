@@ -3,6 +3,6 @@ from patterns.factory.player.player_factory import PlayerFactory
 
 class HumanPlayerFactory(PlayerFactory):
 
-    def create_player(self, game, character, x, facing_right):
+    def create_player(self, game, character, x, facing_right, profile_picture):
 
-        return Player(game, character, x, facing_right)
+        return Player(game, character, x, facing_right, profile_picture)

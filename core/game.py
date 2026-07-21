@@ -2,7 +2,7 @@ import pygame
 import config
 
 from utils.resource_loader import IMAGES
-from managers.resource_manager import ResourceManager
+from ui.hud import HUD
 
 from managers.state_manager import StateManager
 from patterns.state.mainMenuState import MainMenuState
@@ -18,8 +18,7 @@ from core.control_config import ControlsConfig
 
 from managers.input_manager import InputManager
 from managers.combat_manager import CombatManager
-
-
+from managers.resource_manager import ResourceManager
 
 class Game:
 
@@ -55,14 +54,16 @@ class Game:
             self,
             "belen",
             426,
-            True
+            True,
+            "assets/images/personajes/belen.png"
         )
 
         self.player2 = factory.create_player(
             self,
             "profe",
             852,
-            False
+            False,
+            "assets/images/personajes/profe.png"
         )
 
         self.combat_manager= CombatManager()
@@ -83,6 +84,8 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
 
+        #HUD
+        self.hud = HUD(self)
         
 
     def run(self):

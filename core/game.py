@@ -12,6 +12,7 @@ from patterns.state.torneoState import TournamentState
 class Game:
     def __init__(self):
         pygame.init()
+        pygame.mixer.init()
         #creamos la ventana usando las variables de la configuración
         self.game_screen= pygame.Surface((config.ANCHO, config.ALTO))
         self.screen = pygame.display.set_mode((config.ANCHO,config.ALTO), pygame.RESIZABLE)
@@ -22,6 +23,10 @@ class Game:
         #inicializamos el ResourceManager
         self.resource_manager = ResourceManager()
         self.cargar_recursos()
+        #cargar musica
+        pygame.mixer.music.load("assets/sounds/menu_music.mp3")
+        pygame.mixer.music.set_volume(0.5)   # 50%
+        pygame.mixer.music.play(-1)          # Repetir infinitamente
         
         #inicializamos el StateManager
         self.state_manager = StateManager()

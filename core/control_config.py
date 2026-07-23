@@ -8,7 +8,7 @@ from patterns.command.player.kick import KickCommand
 from patterns.command.player.block import BlockCommand
 from patterns.command.player.stop_block import StopBlockCommand
 from patterns.command.player.stop_move import StopMoveCommand
-
+from patterns.command.player.use_item import UseItemCommand
 
 class ControlsConfig:
 
@@ -75,6 +75,25 @@ class ControlsConfig:
             StopMoveCommand(player)
         )
 
+        input_manager.registrar_comando_presionar(
+            "jugador1",
+            pygame.K_z,
+            UseItemCommand(player,0)
+        )
+
+
+        input_manager.registrar_comando_presionar(
+            "jugador1",
+            pygame.K_x,
+            UseItemCommand(player,1)
+        )
+
+
+        input_manager.registrar_comando_presionar(
+            "jugador1",
+            pygame.K_c,
+            UseItemCommand(player,2)
+        )
 
 
     @staticmethod
@@ -136,4 +155,24 @@ class ControlsConfig:
             "jugador2",
             pygame.K_RIGHT,
             StopMoveCommand(player)
+        )
+
+        input_manager.registrar_comando_presionar(
+            "jugador2",
+            pygame.K_b,
+            UseItemCommand(player,0)
+        )
+
+
+        input_manager.registrar_comando_presionar(
+            "jugador2",
+            pygame.K_n,
+            UseItemCommand(player,1)
+        )
+
+
+        input_manager.registrar_comando_presionar(
+            "jugador2",
+            pygame.K_m,
+            UseItemCommand(player,2)
         )

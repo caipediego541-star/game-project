@@ -3,7 +3,9 @@ from patterns.strategy.bot_strategy import BotStrategy
 
 class MediumBotStrategy(BotStrategy):
     def __init__(self):
-        self.decision_time = 5
+        self.decision_time = 0.3
+        self.health= 300
+        self.damage = 15
 
     def execute(self, bot):
         distancia = bot.distance_to_enemy()

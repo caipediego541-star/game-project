@@ -11,10 +11,19 @@ class PlayerHealth(Subject):
         self.health = max_health
         self.dead = False
 
+    def set_health(self, amount):
+
+        self.max_health = amount
+        self.health = amount
+        self.dead = False
+
+        self.notify("health_changed")
+
     def receive_damage(self, damage, blocking=False):
 
         if self.dead:
-            return 0
+            return 0, False
+        
         change= True
         
         if blocking:

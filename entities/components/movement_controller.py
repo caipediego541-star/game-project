@@ -1,3 +1,5 @@
+import config
+
 class MovementController:
 
     def __init__(
@@ -27,8 +29,8 @@ class MovementController:
 
         player.x += self.speed
 
-        if player.x > player.game.ancho - player.width:
-            player.x = player.game.ancho - player.width
+        if player.x > config.ANCHO - player.sprite_width//2:
+            player.x = config.ANCHO - player.sprite_width//2
 
 
     def jump(self):

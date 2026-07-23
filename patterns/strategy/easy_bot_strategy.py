@@ -4,7 +4,9 @@ from patterns.strategy.bot_strategy import BotStrategy
 class EasyBotStrategy(BotStrategy):
 
     def __init__(self):
-        self.decision_time = 12
+        self.decision_time = 2
+        self.health= 200
+        self.damage = 10
 
     def execute(self, bot):
         distancia = bot.distance_to_enemy()

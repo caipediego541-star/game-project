@@ -1,31 +1,37 @@
 import pygame
 import config
-
 from ui.barra_vida import BarraVida
-
 
 class HUD:
 
     def __init__(self, game):
-
         self.game = game
-
-        self.hud_image = (
-            self.game.resource_manager.get_image("hud")
-        )
-
         self.hud_width = 570
         self.hud_height = 170
 
         self.hud_image = pygame.transform.scale(
-            self.hud_image,
+            self.game.resource_manager.get_image("hud"),
             (
                 self.hud_width,
                 self.hud_height
             )
         )
 
+        self.hud_flip = pygame.transform.flip(
+            self.hud_image,
+            True,
+            False
+        )
 
+        self.inventario_image = pygame.transform.scale(
+            self.game.resource_manager.get_image("inventario"),
+            (150, 60)
+        )
+
+        self.boton_pausa = pygame.transform.scale(
+            self.game.resource_manager.get_image("pausa"),
+            (50, 50)
+        )
 
         self.barra_jugador1 = BarraVida(
             jugador=self.game.player1,
@@ -39,73 +45,138 @@ class HUD:
             self.barra_jugador1
         )
 
-        self.nombre_jugador1= self.game.player1.character
+        self.barra_jugador2 = None
 
-        self.barra_jugador2 = BarraVida(
-            jugador=self.game.player2,
-            x=config.ANCHO - 580,
-            y=83,
-            max_width=400,
-            height=40,
-            invertida=True
+        if self.game.player2:
+            self.barra_jugador2 = BarraVida(
+                jugador=self.game.player2,
+                x=config.ANCHO - 580,
+                y=83,
+                max_width=400,
+                height=40,
+                invertida=True
+            )
+
+            self.game.player2.health.add_observer(
+                self.barra_jugador2
+            )
+
+        self.imagen1 = pygame.transform.scale(
+            self.game.player1.profile_picture,
+            (120, 90)
         )
-        
-        self.game.player2.health.add_observer(
-            self.barra_jugador2
-        )
-        
-        self.nombre_jugador2= self.game.player2.character
+        self.imagen2 = None
 
+        if self.game.player2:
+            self.imagen2 = pygame.transform.scale(
+                self.game.player2.profile_picture,
+                (120, 90)
+            )
 
-    def draw(self):
+        self.item_images = {}
+        for item_name in [
+            "mate",
+            "cafe",
+            "laptop",
+            "python",
+            "router",
+            "calculadora"
+        ]:
+            image = self.game.resource_manager.get_image(
+                item_name
+            )
 
-        self.barra_jugador1.draw(
-            self.game.game_screen
-        )
+            if image:
+                self.item_images[item_name] = pygame.transform.scale(
+                    image,
+                    ( 40, 40)
+                )
 
-        self.barra_jugador2.draw(
-            self.game.game_screen
-        )
+    def draw(self, screen):
+        if self.barra_jugador1:
+            self.barra_jugador1.draw(
+                screen
+            )
 
-        imagen1 = pygame.transform.scale(
-            self.barra_jugador1.jugador.profile_picture,
-            (120,90)
-        )
+        if self.barra_jugador2:
+            self.barra_jugador2.draw(
+                screen
+            )
 
-        imagen2 = pygame.transform.scale(
-            self.barra_jugador2.jugador.profile_picture,
-            (120,90)
-        )
-
-        self.game.game_screen.blit(
-            imagen1,
-            (57,60)
-        )
-
-        self.game.game_screen.blit(
-            imagen2,
-            (config.ANCHO - 170,60)
-        )
-
-        # HUD izquierda
-        self.game.game_screen.blit(
+        screen.blit(
             self.hud_image,
             (20, 20)
         )
 
-        # HUD derecha
-        hud_flip = pygame.transform.flip(
-            self.hud_image,
-            True,
-            False
+        screen.blit(
+            self.hud_flip,
+            (config.ANCHO - self.hud_width - 20, 20)
         )
 
-        self.game.game_screen.blit(
-            hud_flip,
-            (
-                config.ANCHO - self.hud_width - 20,
-                20
+        screen.blit(
+            self.imagen1,
+            (57, 60)
+        )
+
+        if self.imagen2:
+            screen.blit(
+                self.imagen2,
+                (
+                    config.ANCHO - 170,
+                    60
+                )
             )
+
+        self.draw_inventory(
+            screen,
+            self.game.player1,
+            170,
+            140
         )
 
-        
+        if self.game.player2:
+            self.draw_inventory(
+                screen,
+                self.game.player2,
+                config.ANCHO - 320,
+                140
+            )
+
+        screen.blit(
+            self.boton_pausa,
+            (config.ANCHO // 2 - 25, 30)
+        )
+
+    def draw_inventory(self, screen, player, x, y):
+        screen.blit(
+            self.inventario_image,
+            (x, y)
+        )
+
+        if not player.inventory:
+            return
+
+        slots = player.inventory.get_items()
+        posiciones = [
+            x + 10,
+            x + 55,
+            x + 100
+        ]
+
+        for index, item in enumerate(slots):
+            if item:
+                image = self.item_images.get(
+                    item.name
+                )
+
+                if image:
+                    screen.blit(
+                        image,
+                        (
+                            posiciones[index],
+                            y + 10
+                        )
+                    )
+
+    def update_inventory(self, inventory):
+        pass

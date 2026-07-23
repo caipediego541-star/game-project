@@ -249,6 +249,12 @@ class Player:
             self.change_animation(
                 "idle"
             )
+        elif current == "saltar":
+            if self.movement.jumping:
+                return
+            self.change_animation(
+                "idle"
+            )
 
     def change_animation(self, animation):
         self.animation.change_animation(

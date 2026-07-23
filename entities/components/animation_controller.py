@@ -34,7 +34,6 @@ class AnimationController:
         self.current_frame += speed
 
         if self.current_animation in [
-            "saltar",
             "victoria",
             "derrota"
         ]:

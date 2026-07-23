@@ -10,7 +10,5 @@ class BasicItem(Item):
             image
         )
 
-
     def use(self, player):
-
         pass

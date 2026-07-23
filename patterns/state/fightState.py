@@ -105,3 +105,10 @@ class FightState(State):
             self.game.hud.draw(
                 screen
             )
+
+    def handle_events(self, events):
+        if self.game.hud:
+            for event in events:
+                self.game.hud.handle_event(
+                    event
+                )

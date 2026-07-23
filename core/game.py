@@ -27,10 +27,11 @@ from managers.combat_manager import CombatManager
 from managers.resource_manager import ResourceManager
 
 class Game:
-
+   
     def __init__(self):
 
         pygame.init()
+        pygame.mixer.init()
 
         self.game_screen = pygame.Surface(
             (config.ANCHO, config.ALTO)
@@ -45,6 +46,10 @@ class Game:
 
         self.resource_manager = ResourceManager()
         self.cargar_recursos()
+        #cargar musica
+        pygame.mixer.music.load("assets/sounds/menu_music.mp3")
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.play(-1)
 
         self.fondo = self.resource_manager.get_image(
             "menu_background"

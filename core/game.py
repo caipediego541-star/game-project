@@ -2,25 +2,29 @@ import pygame
 import config
 
 from utils.resource_loader import IMAGES
-from core.resource_manager import ResourceManager
-from entities.player import Player
+from ui.hud import HUD
 
-from patterns.command.player.move_left import MoveLeftCommand
-from patterns.command.player.move_right import MoveRightCommand
-from patterns.command.player.move_jump import JumpCommand
-from patterns.command.player.punch import PunchCommand
-from patterns.command.player.kick import KickCommand
-from patterns.command.player.block import BlockCommand
-
-from core.state_manager import StateManager
+from managers.state_manager import StateManager
 from patterns.state.mainMenuState import MainMenuState
 from patterns.state.fightState import FightState
 from patterns.state.pauseState import PauseState
 from patterns.state.victoryState import VictoryState
 from patterns.state.torneoState import TournamentState
+from patterns.state.fightStateBot import FightStateBot
+
+from patterns.factory.player.human_player_factory import HumanPlayerFactory
+from patterns.factory.player.bot_player_factory import BotPlayerFactory
+
+from patterns.strategy.easy_bot_strategy import EasyBotStrategy
+from patterns.strategy.hard_bot_strategy import HardBotStrategy
+from patterns.strategy.medium_bot_strategy import MediumBotStrategy
 
 from core.stage import Stage
+from core.control_config import ControlsConfig
 
+from managers.input_manager import InputManager
+from managers.combat_manager import CombatManager
+from managers.resource_manager import ResourceManager
 
 class Game:
 
@@ -28,7 +32,10 @@ class Game:
 
         pygame.init()
 
-        self.game_screen = pygame.Surface((config.ANCHO, config.ALTO))
+        self.game_screen = pygame.Surface(
+            (config.ANCHO, config.ALTO)
+        )
+
         self.screen = pygame.display.set_mode(
             (config.ANCHO, config.ALTO),
             pygame.RESIZABLE
@@ -36,136 +43,160 @@ class Game:
 
         pygame.display.set_caption(config.TITULO)
 
-        # Resource Manager
         self.resource_manager = ResourceManager()
         self.cargar_recursos()
 
-        # Fondo
-        self.fondo = self.resource_manager.get_image("menu_background")
-        self.ancho, self.alto =self.ajustar_fondo()
-        self.escenario = Stage(self.alto, self.ancho)
+        self.fondo = self.resource_manager.get_image(
+            "menu_background"
+        )
 
-        # State Manager
+        self.ancho, self.alto = self.ajustar_fondo()
+
+        self.escenario = Stage(
+            self.alto,
+            self.ancho
+        )
+
         self.state_manager = StateManager()
-        self.state_manager.set_state(MainMenuState(self))
+        self.state_manager.set_state(
+            MainMenuState(self)
+        )
 
-        # Jugador
-        self.player = Player(self)
+        self.factory = HumanPlayerFactory()
+        self.bot_factory = BotPlayerFactory()
 
-        # Comandos
-        self.commands = {
-            pygame.K_a: MoveLeftCommand(self.player),
-            pygame.K_d: MoveRightCommand(self.player),
-            pygame.K_SPACE: JumpCommand(self.player),
-            pygame.K_j: PunchCommand(self.player),
-            pygame.K_k: KickCommand(self.player),
-            pygame.K_l: BlockCommand(self.player)
-        }
+        self.player1 = self.factory.create_player(
+            self,
+            "belen",
+            426,
+            True,
+            "assets/images/personajes/belen.png"
+        )
+
+        self.player2 = None
+        self.combat_manager = CombatManager()
+        self.input_manager = InputManager()
+        ControlsConfig.configurar_jugador1(
+            self.input_manager,
+            self.player1
+        )
 
         self.clock = pygame.time.Clock()
         self.running = True
+        self.hud = None
 
     def run(self):
-
         self.running = True
-
         while self.running:
-
             self.handle_events()
             self.update()
             self.draw()
-
             pygame.display.flip()
             self.clock.tick(config.FPS)
-
         pygame.quit()
 
     def handle_events(self):
+        eventos = pygame.event.get()
 
-        events = []
-
-        for event in pygame.event.get():
-
-            events.append(event)
-
-            if event.type == pygame.QUIT:
+        for evento in eventos:
+            if evento.type == pygame.QUIT:
                 self.running = False
 
-            elif event.type == pygame.KEYDOWN:
+            elif evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_1:
+                    self.state_manager.set_state(
+                        MainMenuState(self)
+                    )
 
-                print(f"Se presionó la tecla: {pygame.key.name(event.key)}")
+                elif evento.key == pygame.K_2:
+                    self.state_manager.set_state(
+                        FightState(self)
+                    )
+                    self.player2 = self.factory.create_player(
+                        self,
+                        "profe",
+                        852,
+                        False,
+                        "assets/images/personajes/profe.png"
+                    )
 
-                if event.key == pygame.K_1:
-                    self.state_manager.set_state(MainMenuState(self))
+                    self.hud = HUD(self)
 
-                elif event.key == pygame.K_2:
-                    self.state_manager.set_state(FightState(self))
+                    ControlsConfig.configurar_jugador2(
+                        self.input_manager,
+                        self.player2
+                    )
 
-                elif event.key == pygame.K_3:
-                    self.state_manager.set_state(PauseState(self))
+                elif evento.key == pygame.K_3:
+                    self.state_manager.set_state(
+                        PauseState(self)
+                    )
 
-                elif event.key == pygame.K_4:
-                    self.state_manager.set_state(VictoryState(self))
+                elif evento.key == pygame.K_4:
+                    self.state_manager.set_state(
+                        VictoryState(self)
+                    )
 
-                elif event.key == pygame.K_5:
-                    self.state_manager.set_state(TournamentState(self))
+                elif evento.key == pygame.K_5:
+                    self.state_manager.set_state(
+                        TournamentState(self)
+                    )
 
-                elif event.key in (
-                    pygame.K_SPACE,
-                    pygame.K_j,
-                    pygame.K_k,
-                    pygame.K_l
-                ):
-                    self.commands[event.key].execute()
+                elif evento.key == pygame.K_6:
+                    self.state_manager.set_state(
+                        FightStateBot(self)
+                    )
 
-            elif event.type == pygame.KEYUP:
-                print(f"Se soltó la tecla: {pygame.key.name(event.key)}")
+                    estrategia = HardBotStrategy()
 
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                print(f"Se presionó el botón del mouse: {event.button}")
+                    self.player2 = self.bot_factory.create_player(
+                        self,
+                        "profe",
+                        852,
+                        self.player1,
+                        False,
+                        "assets/images/personajes/profe.png",
+                        estrategia
+                    )
 
-            elif event.type == pygame.MOUSEBUTTONUP:
-                print(f"Se soltó el botón del mouse: {event.button}")
+                    self.hud = HUD(self)
 
-            elif event.type == pygame.VIDEORESIZE:
-                self.screen = pygame.display.set_mode(
-                    (event.w,event.h),
-                    pygame.RESIZABLE
-    )
+            if isinstance(
+                self.state_manager.current_state,
+                (FightState, FightStateBot, TournamentState)
+            ):
 
-        # Movimiento continuo
-        keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_a]:
-            self.commands[pygame.K_a].execute()
-
-        if keys[pygame.K_d]:
-            self.commands[pygame.K_d].execute()
-
-        if not keys[pygame.K_a] and not keys[pygame.K_d] and not self.player.jumping:
-            self.player.current_animation = "caminar"
-        # Delegar eventos al estado actual
-        self.state_manager.handle_events(events)
+                self.input_manager.manejar_evento(
+                    evento
+                )
+        self.state_manager.handle_events(
+            eventos
+        )
 
     def update(self):
+        self.input_manager.actualizar()
+        self.player1.update()
+        if self.player2:
+            self.player2.update()
+            self.combat_manager.check_collision(
+                self.player1,
+                self.player2
+            )
 
-        self.player.update()
         self.state_manager.update()
 
     def draw(self):
 
-        # Limpiar pantalla interna
-        self.game_screen.fill((0,0,0))
+        self.game_screen.fill(
+            (0,0,0)
+        )
+
         self.state_manager.draw(
             self.game_screen
         )
 
-
-        # Escalar todo el juego
         scaled_game = self.scale_game()
 
-
-        # Centrar
         x = (
             self.screen.get_width()
             - scaled_game.get_width()
@@ -176,54 +207,50 @@ class Game:
             - scaled_game.get_height()
         ) // 2
 
-
-        # Limpiar ventana real
-        self.screen.fill((0,0,0))
-
-
-        # Dibujar juego escalado
+        self.screen.fill(
+            (0,0,0)
+        )
         self.screen.blit(
             scaled_game,
             (x,y)
         )
 
     def ajustar_fondo(self):
-
         ancho, alto = self.screen.get_size()
-
         self.fondo = pygame.transform.scale(
-            self.resource_manager.get_image("menu_background"),
+            self.resource_manager.get_image(
+                "menu_background"
+            ),
             (ancho, alto)
         )
         return ancho, alto
 
-    def cargar_recursos(self):
 
+    def cargar_recursos(self):
         for nombre, direccion in IMAGES.items():
-            self.resource_manager.load_image(nombre, direccion)
+            self.resource_manager.load_image(
+                nombre,
+                direccion
+            )
 
     def scale_game(self):
 
         window_width, window_height = self.screen.get_size()
 
-        game_width = config.ANCHO
-        game_height = config.ALTO
-
-
         scale = min(
-            window_width / game_width,
-            window_height / game_height
+            window_width / config.ANCHO,
+            window_height / config.ALTO
         )
 
+        new_width = int(
+            config.ANCHO * scale
+        )
 
-        new_width = int(game_width * scale)
-        new_height = int(game_height * scale)
+        new_height = int(
+            config.ALTO * scale
+        )
 
-
-        scaled = pygame.transform.scale(
+        return pygame.transform.scale(
             self.game_screen,
             (new_width, new_height)
         )
-
-
-        return scaled

@@ -24,6 +24,15 @@ class FightState(State):
             ):
             self.game.item_manager = self.game.create_item_manager()
 
+        pygame.mixer.music.load(
+            "assets/sounds/pelea.mp3"
+        )
+
+        pygame.mixer.music.set_volume(
+            0.1
+        )
+
+        pygame.mixer.music.play(-1)
     def handle_events(self, events):
         pass
 

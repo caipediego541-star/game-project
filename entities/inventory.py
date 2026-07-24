@@ -48,7 +48,6 @@ class Inventory:
         )
 
         if item:
-            print(f"{player.character} usó {item.name}")
             item.use(
                 player
             )

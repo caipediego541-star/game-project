@@ -16,8 +16,19 @@ class BotController:
         self.block_timer = 0
         self.block_duration = 0
 
+        self.item_timer = 0
+        self.item_cooldown = random.randint(
+            240,
+            420
+        )
 
     def update(self):
+        self.item_timer += 1
+
+        if self.item_timer >= self.item_cooldown:
+            self.item_timer = 0
+            self.item_cooldown = random.randint(240, 420)
+            self.use_item()
 
         if self.blocking:
             self.block_timer += 1
@@ -131,3 +142,17 @@ class BotController:
         self.block_timer = 0
 
         self.bot.stop_block()
+
+    def use_item(self):
+        disponibles = []
+        for i, item in enumerate(self.bot.inventory.get_items()):
+            if item is not None:
+                disponibles.append(i)
+        if not disponibles:
+            return
+
+        indice = random.choice(disponibles)
+        self.bot.inventory.use_item(
+            indice,
+            self.bot
+        )  

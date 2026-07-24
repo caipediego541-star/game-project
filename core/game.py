@@ -1,6 +1,6 @@
 import pygame
 import config
-from utils.resource_loader import (IMAGES, ITEMS, BOTONES)
+from utils.resource_loader import (IMAGES, ITEMS, BOTONES, SOUNDS)
 
 from managers.state_manager import StateManager
 
@@ -13,7 +13,8 @@ from patterns.state.torneoState import TournamentState
 from patterns.factory.player.human_player_factory import HumanPlayerFactory
 from patterns.factory.player.bot_player_factory import BotPlayerFactory
 
-from patterns.strategy.hard_bot_strategy import HardBotStrategy
+from patterns.strategy.easy_bot_strategy import EasyBotStrategy
+
 
 from core.stage import Stage
 from core.control_config import ControlsConfig
@@ -31,7 +32,7 @@ class Game:
 
     def __init__(self):
         pygame.init()
-
+        pygame.mixer.init()
         self.game_screen = pygame.Surface(
             (
                 config.ANCHO,
@@ -176,7 +177,7 @@ class Game:
         contra_bot=False
     ):
         if contra_bot:
-            estrategia = HardBotStrategy()
+            estrategia = EasyBotStrategy()
             self.player2 = self.bot_factory.create_player(
                 self,
                 "profe",
@@ -277,6 +278,12 @@ class Game:
 
         for nombre, direccion in BOTONES.items():
             self.resource_manager.load_image(
+                nombre,
+                direccion
+            )
+
+        for nombre, direccion in SOUNDS.items():
+            self.resource_manager.load_sound(
                 nombre,
                 direccion
             )

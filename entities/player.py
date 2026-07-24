@@ -28,11 +28,16 @@ class Player:
         self.width = self.sprite_width - 20
         self.height = self.sprite_height
 
-        self.health = PlayerHealth()
         self.inventory = Inventory()
 
+        self.health = PlayerHealth()
+
         self.damage = 10
+        self.base_damage = self.damage
         self.speed = 10
+        self.base_speed = self.speed
+        self.damage_timer = 0
+        self.speed_timer = 0
 
         self.victory = False
         self.has_hit = False
@@ -187,6 +192,18 @@ class Player:
 
         if self.attack_cooldown > 0:
             self.attack_cooldown -= 1
+
+        if self.damage_timer > 0:
+            self.damage_timer -= 1
+            if self.damage_timer == 0:
+                self.damage = self.base_damage
+
+        if self.speed_timer > 0:
+            self.speed_timer -= 1
+
+            if self.speed_timer == 0:
+                self.speed = self.base_speed
+                self.movement.speed = self.base_speed
 
         self.hurtbox.update(
             self.x - self.width // 2 + 40,

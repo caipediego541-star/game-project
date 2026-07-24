@@ -3,7 +3,7 @@ from patterns.observer.subject import Subject
 
 class PlayerHealth(Subject):
 
-    def __init__(self, max_health=100):
+    def __init__(self, max_health=200):
 
         super().__init__()
 
@@ -42,3 +42,12 @@ class PlayerHealth(Subject):
             self.notify("damage")
 
         return damage, change
+
+    def heal(self, amount):
+        self.health = min(
+            self.health + amount,
+            self.max_health
+        )
+        self.notify(
+            "health_changed"
+        )

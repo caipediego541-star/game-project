@@ -35,4 +35,7 @@ SOUNDS = {
     "profe_caminar": "assets/sounds/profe/caminar.wav",
     "profe_recibir_golpe": "assets/sounds/profe/recibir_golpe.wav",
     "profe_cubrirse": "assets/sounds/profe/cubrirse.wav",
-    "profe_derrota": "assets/sounds/profe/derrota.wav"}
+    "profe_derrota": "assets/sounds/profe/derrota.wav",
+
+    "usar_item": "assets/sounds/usar_item.wav",
+    "recoger_item": "assets/sounds/recoger_item.wav"}

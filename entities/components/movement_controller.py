@@ -50,7 +50,6 @@ class MovementController:
 
             player.y += self.velocity_y
 
-
             if player.y >= self.ground:
 
                 player.y = self.ground

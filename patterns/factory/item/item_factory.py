@@ -1,4 +1,7 @@
-from entities.items.item import Item
+from entities.items.cafe import Cafe
+from entities.items.laptop import Laptop
+from entities.items.mate import Mate
+from entities.items.examen import Examen
 
 class ItemFactory:
     def __init__(self, resource_manager):
@@ -10,7 +13,37 @@ class ItemFactory:
             item_name
         )
 
-        return Item(
-            item_name,
-            image
-        )
+        if item_name == "mate":
+            return Mate(item_name, image)
+
+        elif item_name == "cafe":
+            return Cafe(item_name, image)
+
+        elif item_name == "laptop":
+            return Laptop(item_name, image)
+
+        elif item_name == "python":
+
+            return Examen(
+                item_name,
+                image,
+                "programacion"
+            )
+
+
+        elif item_name == "router":
+
+            return Examen(
+                item_name,
+                image,
+                "redes"
+            )
+
+
+        elif item_name == "calculadora":
+
+            return Examen(
+                item_name,
+                image,
+                "matematica"
+            )

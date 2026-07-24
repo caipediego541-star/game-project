@@ -32,7 +32,7 @@ class ResourceManager:
         sound = pygame.mixer.Sound(path)
 
         sound.set_volume(
-            0.8
+            0.9
         )
 
         self.sounds[name] = sound

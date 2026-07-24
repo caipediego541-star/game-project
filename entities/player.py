@@ -3,6 +3,7 @@ import pygame
 from combat.hitbox import Hitbox
 from combat.hurtbox import Hurtbox
 from entities.player_health import PlayerHealth
+from entities.inventory import Inventory
 from entities.components.animation_controller import AnimationController
 from entities.components.movement_controller import MovementController
 
@@ -10,34 +11,35 @@ from entities.components.movement_controller import MovementController
 class Player:
 
     def __init__(self, game, character, x, facing_right, profile_picture):
-
         self.character = character
+        self.game = game
 
         self.profile_picture = pygame.image.load(
             profile_picture
         ).convert_alpha()
 
-        self.game = game
         self.ground = 650
 
         self.x = x
         self.y = self.ground
-
         self.sprite_width = 350
         self.sprite_height = 350
 
         self.width = self.sprite_width - 20
         self.height = self.sprite_height
 
-        # Stats
         self.health = PlayerHealth()
+        self.inventory = Inventory()
+
         self.damage = 10
         self.speed = 10
+
         self.victory = False
         self.has_hit = False
+        self.attack_cooldown = 0
 
-        # Combate
         self.hitbox = Hitbox()
+
         self.attack_hitboxes = {
 
             "golpe": {
@@ -59,7 +61,6 @@ class Player:
             }
         }
 
-        # Hurtbox
         self.hurtbox = Hurtbox(
             self.x - self.width // 2 + 30,
             self.y - self.height + 10,
@@ -67,20 +68,16 @@ class Player:
             self.height - 30
         )
 
-        # Física
         self.movement = MovementController(
             speed=self.speed,
             gravity=0.7,
             ground=self.ground
         )
-        # Estado
+
         self.busy = False
         self.blocking = False
 
-        # Dirección
         self.facing_right = facing_right
-
-        # Animaciones
         animations = self.game.resource_manager.load_character(
             character
         )
@@ -89,36 +86,32 @@ class Player:
         )
 
     def move_left(self):
-
         if self.busy or self.is_finished():
             return
-        
-        self.movement.move_left(self)
+
+        self.movement.move_left(
+            self
+        )
+
         self.facing_right = False
-
-
         if not self.movement.jumping:
             self.change_animation(
                 "caminar"
             )
 
     def move_right(self):
-
         if self.busy or self.is_finished():
             return
-        self.movement.move_right(self)
-
+        self.movement.move_right(
+            self
+        )
         self.facing_right = True
-
         if not self.movement.jumping:
             self.change_animation(
                 "caminar"
             )
 
-
-
     def jump(self):
-
         if self.busy or self.is_finished():
             return
 
@@ -129,27 +122,16 @@ class Player:
             )
 
     def draw(self, screen):
-
         image = self.animation.get_image()
-
-        if self.animation.get_current_animation() == "derrota":
-            scale_w = 1.6
-            scale_h = 1.2
-        else:
-            scale_w = 1
-            scale_h = 1
-
-        width = int(
-            self.sprite_width * scale_w
-        )
-        
-        height = int(
-            self.sprite_height * scale_h
-        )
+        width = self.sprite_width
+        height = self.sprite_height
 
         image = pygame.transform.scale(
             image,
-            (width, height)
+            (
+                width,
+                height
+            )
         )
 
         if not self.facing_right:
@@ -162,23 +144,28 @@ class Player:
         x = self.x - width // 2
         y = self.y - height
 
-        if self.animation.get_current_animation() == "derrota":
-            y = self.y - height + 15
-
         screen.blit(
             image,
-            (x, y)
+            (
+                x,
+                y
+            )
         )
 
     def update(self):
-
         termino = self.animation.update(
             self.blocking
         )
+
         if termino:
             self.animation_finished()
 
-        self.movement.update(self)
+        self.movement.update(
+            self
+        )
+
+        if self.attack_cooldown > 0:
+            self.attack_cooldown -= 1
 
         self.hurtbox.update(
             self.x - self.width // 2 + 40,
@@ -192,7 +179,10 @@ class Player:
     def update_attack_hitbox(self):
         animation = self.animation.get_current_animation()
 
-        if animation not in ["golpe", "patada"]:
+        if animation not in [
+            "golpe",
+            "patada"
+        ]:
             self.hitbox.desactivar()
             return
 
@@ -210,10 +200,13 @@ class Player:
             offset_x = datos["offset_x"]
             offset_y = datos["offset_y"]
 
+
             if self.facing_right:
                 hitbox_x = self.x + offset_x
+
             else:
                 hitbox_x = self.x - offset_x - ancho
+
             hitbox_y = self.y + offset_y
 
             self.hitbox.activar(
@@ -222,8 +215,10 @@ class Player:
                 ancho,
                 alto
             )
+
         else:
             self.hitbox.desactivar()
+
 
 
     def animation_finished(self):
@@ -234,19 +229,29 @@ class Player:
             "patada",
             "recibir_golpe"
         ]:
+
             self.hitbox.desactivar()
             self.busy = False
+
             if self.movement.jumping:
                 self.change_animation(
                     "saltar"
                 )
+
             else:
                 self.change_animation(
                     "idle"
                 )
 
+
         elif current == "cubrirse":
             self.busy = False
+            self.change_animation(
+                "idle"
+            )
+        elif current == "saltar":
+            if self.movement.jumping:
+                return
             self.change_animation(
                 "idle"
             )
@@ -257,36 +262,39 @@ class Player:
             force
         )
 
-    def punch(self):
 
+
+    def punch(self):
         if self.busy or self.is_finished():
+            return
+
+        if self.attack_cooldown > 0:
             return
 
         self.has_hit = False
         self.busy = True
+        self.attack_cooldown = 60
         self.change_animation(
             "golpe"
         )
-
-
 
     def kick(self):
         if self.busy or self.is_finished():
             return
 
+        if self.attack_cooldown > 0:
+            return
+
         self.has_hit = False
         self.busy = True
+        self.attack_cooldown = 60
         self.change_animation(
             "patada"
         )
 
-
-
     def block(self):
-
         if self.busy or self.is_finished():
             return
-
         self.busy = True
         self.blocking = True
         self.change_animation(
@@ -303,6 +311,8 @@ class Player:
                 "idle"
             )
 
+
+
     def receive_damage(self, damage):
         damage, change = self.health.receive_damage(
             damage,
@@ -315,19 +325,19 @@ class Player:
         if self.health.dead:
             self.busy = True
             self.blocking = False
-
             self.change_animation(
                 "derrota"
             )
+
         else:
             if change:
                 self.change_animation(
                     "recibir_golpe"
                 )
+
         return damage
 
     def is_finished(self):
-
         return self.animation.get_current_animation() in [
             "victoria",
             "derrota"

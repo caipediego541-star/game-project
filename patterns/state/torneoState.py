@@ -122,7 +122,7 @@ class TournamentState(State):
         self.game.player2.draw(screen)
 
         if self.game.hud:
-            self.game.hud.draw()
+            self.game.hud.draw(screen)
 
     def handle_events(self, events):
         return super().handle_events(events)

@@ -22,6 +22,14 @@ class FightStateBot(State):
     def update(self):
         jugador1 = self.game.player1
         jugador2 = self.game.player2
+        if jugador1:
+            jugador1.update()
+        if jugador2:
+            jugador2.update()
+        #detectar golpes
+        self.game.combat_manager.check_collision(
+            jugador1,jugador2)
+
 
         if not self.combate_terminado:
             if jugador1.health.dead:
@@ -72,5 +80,5 @@ class FightStateBot(State):
         self.game.player1.draw(screen)
         self.game.player2.draw(screen)
         if self.game.hud:
-            self.game.hud.draw()
+            self.game.hud.draw(screen)
     

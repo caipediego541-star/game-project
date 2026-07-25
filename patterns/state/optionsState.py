@@ -2,6 +2,7 @@ import pygame
 import config
 from patterns.state.stateBase import State
 from patterns.factory.button_factory import ButtonFactory
+from patterns.singleton.sound_manager import SoundManager
 from utils.helpers import scale_image
 
 
@@ -11,10 +12,9 @@ class OptionsState(State):
     def __init__(self, game):
 
         self.game = game
+        self.sound_manager = SoundManager()
         self.background = self.game.resource_manager.get_image("menu_background")
         self.buttons = []
-        self.music_on = True
-        self.volume = 50
         self.message = ""
         self.message_timer = 0
         #musica
@@ -104,31 +104,26 @@ class OptionsState(State):
 
 
     def toggle_music(self):
-        self.music_on = not self.music_on
-        if self.music_on:
-            pygame.mixer.music.unpause()
+        self.sound_manager.toggle_music()
+        if self.sound_manager.is_music_on():
             self.message = "MÚSICA ACTIVADA"
         else:
-            pygame.mixer.music.pause()
             self.message = "MÚSICA DESACTIVADA"
         self.message_timer = 120
 
     def volume_up(self):
-        self.volume += 10
-        if self.volume > 100:
-            self.volume = 100
-        pygame.mixer.music.set_volume(self.volume / 100)
-        self.message = f"VOLUMEN: {self.volume} %"
+        self.sound_manager.volume_up()
+        volumen = round(self.sound_manager.volume * 100)
+        self.message = f"VOLUMEN: {volumen} %"
         self.message_timer = 120
+
 
     def volume_down(self):
-        self.volume -= 10
-        if self.volume < 0:
-            self.volume = 0
-        pygame.mixer.music.set_volume(self.volume / 100)
-        self.message = f"VOLUMEN: {self.volume} %"
-        self.message_timer = 120
-
+       self.sound_manager.volume_down()
+       volumen = round(self.sound_manager.volume * 100)
+       self.message = f"VOLUMEN: {volumen} %"
+       self.message_timer = 120
+       
     def go_back(self):
         print("VOLVER")
         from patterns.state.mainMenuState import MainMenuState

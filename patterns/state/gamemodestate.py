@@ -3,7 +3,6 @@ import config
 from patterns.state.stateBase import State
 from patterns.factory.button_factory import ButtonFactory
 from utils.helpers import scale_image
-from patterns.state.fightState import FightState
 from patterns.state.torneoState import TournamentState
 
 class GameModeState(State):
@@ -31,7 +30,7 @@ class GameModeState(State):
         # VS BOT
         imagen_vsbot = self.game.resource_manager.get_image("boton_vsbot")
         imagen_vsbot = pygame.transform.scale_by(imagen_vsbot, 0.4)
-        x_vsbot = x_vsbot = (config.ANCHO - imagen_vsbot.get_width()) // 2
+        x_vsbot = (config.ANCHO - imagen_vsbot.get_width()) // 2
         self.button_vsbot = ButtonFactory.create_button(
             image=imagen_vsbot,
             x=x_vsbot,
@@ -91,11 +90,13 @@ class GameModeState(State):
     
     def start_1vs1(self):
         print("1 VS 1")
-        self.game.state_manager.set_state(FightState(self.game))
+        self.game.iniciar_pelea(False)
+        
 
     def start_vsbot(self):
         print("VS BOT")
-        self.game.state_manager.set_state(FightState(self.game))
+        self.game.iniciar_pelea(True)
+       
 
     def start_torneo(self):
         print("TORNEO")

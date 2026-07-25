@@ -25,7 +25,7 @@ from managers.resource_manager import ResourceManager
 from managers.item_manager import ItemManager
 
 from patterns.factory.item.item_factory import ItemFactory
-
+from patterns.singleton.sound_manager import SoundManager
 from ui.hud import HUD
 
 class Game:
@@ -56,10 +56,9 @@ class Game:
         self.resource_manager = ResourceManager()
         self.cargar_recursos()
         #cargar musica
-        pygame.mixer.music.load("assets/sounds/menu_music.mp3")
-        pygame.mixer.music.set_volume(0.5)
-        pygame.mixer.music.play(-1)
-
+        self.sound_manager = SoundManager()
+        self.sound_manager.play_music(
+             "assets/sounds/menu_music.mp3")
         self.fondo = self.resource_manager.get_image(
             "menu_background"
         )
@@ -212,9 +211,13 @@ class Game:
         )
 
         self.item_manager.items.clear()
-        self.state_manager.set_state(
-            FightState(self)
-        )
+        if contra_bot:
+            self.state_manager.set_state(
+                FightStateBot(self))
+        else:
+            self.state_manager.set_state(
+                FightState(self))
+        
 
     def update(self):
         if isinstance(

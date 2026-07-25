@@ -1,0 +1,79 @@
+import pygame
+
+
+class SoundManager:
+
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(SoundManager, cls).__new__(cls)
+            cls._instance.initialized = False
+
+        return cls._instance
+
+
+    def __init__(self):
+
+        if self.initialized:
+            return
+
+        self.volume = 0.5
+        self.music_on = True
+
+        pygame.mixer.init()
+
+        self.initialized = True
+
+
+    def play_music(self, path):
+
+        pygame.mixer.music.load(path)
+        pygame.mixer.music.set_volume(
+            self.volume
+        )
+        pygame.mixer.music.play(-1)
+
+
+    def toggle_music(self):
+
+        self.music_on = not self.music_on
+
+        if self.music_on:
+            pygame.mixer.music.unpause()
+
+        else:
+            pygame.mixer.music.pause()
+
+
+    def volume_up(self):
+
+        self.volume = round(self.volume + 0.1, 2)
+
+        if self.volume > 1:
+            self.volume = 1
+
+        pygame.mixer.music.set_volume(
+            self.volume
+        )
+
+
+    def volume_down(self):
+
+        self.volume = round(self.volume - 0.1, 2)
+
+        if self.volume < 0:
+            self.volume = 0
+
+        pygame.mixer.music.set_volume(
+            self.volume
+        )
+    def set_volume(self, volume):
+        pygame.mixer.music.set_volume(volume)
+        self.volume = volume
+
+    def get_volume(self):
+        return self.volume
+
+    def is_music_on(self):
+        return self.music_on

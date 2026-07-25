@@ -1,4 +1,5 @@
 import pygame
+import config
 from patterns.state.stateBase import State
 from patterns.factory.button_factory import ButtonFactory
 from utils.helpers import scale_image
@@ -12,43 +13,50 @@ class GameModeState(State):
         self.game = game
         self.background = self.game.resource_manager.get_image("menu_background")
         self.buttons = []
+
+        separacion = 20
+
         #1vs1
 
         imagen_1vs1 = self.game.resource_manager.get_image("boton_1vs1")
         imagen_1vs1 = pygame.transform.scale_by(imagen_1vs1, 0.4)
+        x_1vs1 = (config.ANCHO - imagen_1vs1.get_width()) // 2
         self.button_1vs1 = ButtonFactory.create_button(
             image=imagen_1vs1,
-            x=260,
-            y=80,
+            x=x_1vs1,
+            y=120,
             action=self.start_1vs1
         )
         self.buttons.append(self.button_1vs1)
         # VS BOT
         imagen_vsbot = self.game.resource_manager.get_image("boton_vsbot")
         imagen_vsbot = pygame.transform.scale_by(imagen_vsbot, 0.4)
+        x_vsbot = x_vsbot = (config.ANCHO - imagen_vsbot.get_width()) // 2
         self.button_vsbot = ButtonFactory.create_button(
             image=imagen_vsbot,
-            x=260,
-            y=230,
+            x=x_vsbot,
+            y=260,
             action=self.start_vsbot
         )
         self.buttons.append(self.button_vsbot)
         # Torneo
         imagen_torneo = self.game.resource_manager.get_image("boton_torneo")
         imagen_torneo = pygame.transform.scale_by(imagen_torneo, 0.4)
+        x_torneo = (config.ANCHO - imagen_torneo.get_width()) // 2
         self.button_torneo = ButtonFactory.create_button(
             image=imagen_torneo,
-            x=260,
-            y=380,
+            x=x_torneo,
+            y=400,
             action=self.start_torneo
         )
         self.buttons.append(self.button_torneo)
         # Volver
         imagen_volver = self.game.resource_manager.get_image("boton_volver")
         imagen_volver = pygame.transform.scale_by(imagen_volver, 0.27)
+        x_volver = (config.ANCHO - imagen_volver.get_width()) // 2
         self.button_volver = ButtonFactory.create_button(
             image=imagen_volver,
-            x=255,
+            x=x_volver,
             y=530,
             action=self.go_back
         )
@@ -63,7 +71,7 @@ class GameModeState(State):
                 self.game.running = False
 
             for button in self.buttons:
-                button.handle_event(event)
+                button.handle_event(event,self.game.get_mouse_position())
 
 
     def update(self):

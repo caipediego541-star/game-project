@@ -311,3 +311,22 @@ class Game:
                 new_height
             )
         )
+    def get_mouse_position(self):
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        window_width, window_height = self.screen.get_size()
+        scale = min(
+            window_width / config.ANCHO,
+            window_height / config.ALTO)
+
+        new_width = int(config.ANCHO * scale)
+        new_height = int(config.ALTO * scale)
+
+        offset_x = (window_width - new_width) // 2
+        offset_y = (window_height - new_height) // 2
+
+        game_x = (mouse_x - offset_x) / scale
+        game_y = (mouse_y - offset_y) / scale
+
+        return (game_x,game_y)
+
+

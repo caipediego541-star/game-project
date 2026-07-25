@@ -1,4 +1,5 @@
 import pygame
+import config
 from patterns.state.stateBase import State
 from patterns.factory.button_factory import ButtonFactory
 from utils.helpers import scale_image
@@ -19,19 +20,22 @@ class OptionsState(State):
         #musica
         imagen_musica = self.game.resource_manager.get_image("boton_musica")
         imagen_musica = pygame.transform.scale_by(imagen_musica, 0.4)
+        x_musica = (config.ANCHO - imagen_musica.get_width()) // 2
         self.button_musica = ButtonFactory.create_button(
             image=imagen_musica,
-            x=260,
-            y=80,
+            x=x_musica,
+            y=120,
             action=self.toggle_music
         )
         self.buttons.append(self.button_musica)
         #volumen +
         imagen_volumen_mas = self.game.resource_manager.get_image("boton_volumen_mas")
         imagen_volumen_mas = pygame.transform.scale_by(imagen_volumen_mas, 0.4)
+        x_volumen_mas = (config.ANCHO - imagen_volumen_mas.get_width()) // 2
+
         self.button_volumen_mas = ButtonFactory.create_button(
             image=imagen_volumen_mas,
-            x=260,
+            x=x_volumen_mas,
             y=230,
             action=self.volume_up
         )
@@ -39,9 +43,10 @@ class OptionsState(State):
         #volumen -
         imagen_volumen_menos = self.game.resource_manager.get_image("boton_volumen_menos")
         imagen_volumen_menos = pygame.transform.scale_by(imagen_volumen_menos, 0.4)
+        x_volumen_menos = (config.ANCHO - imagen_volumen_menos.get_width()) // 2
         self.button_volumen_menos = ButtonFactory.create_button(
             image=imagen_volumen_menos,
-            x=260,
+            x=x_volumen_menos,
             y=380,
             action=self.volume_down
         )
@@ -49,9 +54,10 @@ class OptionsState(State):
         # Volver
         imagen_volver = self.game.resource_manager.get_image("boton_volver")
         imagen_volver = pygame.transform.scale_by(imagen_volver, 0.33)
+        x_volver = (config.ANCHO - imagen_volver.get_width()) // 2
         self.button_volver = ButtonFactory.create_button(
             image=imagen_volver,
-            x=260,
+            x=x_volver,
             y=530,
             action=self.go_back
         )
@@ -67,7 +73,7 @@ class OptionsState(State):
                 self.game.running = False
 
             for button in self.buttons:
-                button.handle_event(event)
+                button.handle_event(event,self.game.get_mouse_position())
 
 
     def update(self):
@@ -86,9 +92,14 @@ class OptionsState(State):
             button.draw(screen)
         #mostrar mensaje musica
         if self.message_timer > 0:
-            font = pygame.font.Font(None, 40)
-            text = font.render(self.message, True, (255,255,0))
-            screen.blit(text, (560, 250))
+            font = pygame.font.Font(None, 45)
+
+            text = font.render(self.message, True, (255, 255, 255))
+           
+            #posicion
+            x = config.ANCHO - text.get_width() - 150
+            y = 300
+            screen.blit(text, (x,y))
             self.message_timer -= 1
 
 

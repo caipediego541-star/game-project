@@ -9,8 +9,10 @@ class Button:
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
-    def handle_event(self, event):
+    def handle_event(self, event,mouse_pos=None):
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if self.rect.collidepoint(event.pos):
+            if mouse_pos is None:
+                mouse_pos = event.pos
+            if self.rect.collidepoint(mouse_pos):
                 if self.action:
                     self.action()

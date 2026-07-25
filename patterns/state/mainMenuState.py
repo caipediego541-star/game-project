@@ -66,7 +66,7 @@ class MainMenuState(State):
             if event.type == pygame.QUIT:
                 self.game.running = False
             for button in self.buttons:
-                button.handle_event(event)
+                button.handle_event(event,self.game.get_mouse_position())
 
 
 

@@ -28,11 +28,16 @@ class Player:
         self.width = self.sprite_width - 20
         self.height = self.sprite_height
 
-        self.health = PlayerHealth()
         self.inventory = Inventory()
 
+        self.health = PlayerHealth()
+
         self.damage = 10
+        self.base_damage = self.damage
         self.speed = 10
+        self.base_speed = self.speed
+        self.damage_timer = 0
+        self.speed_timer = 0
 
         self.victory = False
         self.has_hit = False
@@ -60,6 +65,8 @@ class Player:
                 "end_frame": 7
             }
         }
+
+        self.walk_sound_playing = False
 
         self.hurtbox = Hurtbox(
             self.x - self.width // 2 + 30,
@@ -94,10 +101,18 @@ class Player:
         )
 
         self.facing_right = False
+
         if not self.movement.jumping:
             self.change_animation(
                 "caminar"
             )
+
+        if not self.walk_sound_playing:
+            self.game.resource_manager.get_sound(
+                f"{self.character}_caminar"
+            ).play(-1)
+
+            self.walk_sound_playing = True
 
     def move_right(self):
         if self.busy or self.is_finished():
@@ -111,6 +126,13 @@ class Player:
                 "caminar"
             )
 
+        if not self.walk_sound_playing:
+            self.game.resource_manager.get_sound(
+                f"{self.character}_caminar"
+            ).play(-1)
+
+            self.walk_sound_playing = True
+
     def jump(self):
         if self.busy or self.is_finished():
             return
@@ -120,6 +142,10 @@ class Player:
             self.change_animation(
                 "saltar"
             )
+
+        self.game.resource_manager.get_sound(
+            f"{self.character}_saltar"
+        ).play()
 
     def draw(self, screen):
         image = self.animation.get_image()
@@ -166,6 +192,18 @@ class Player:
 
         if self.attack_cooldown > 0:
             self.attack_cooldown -= 1
+
+        if self.damage_timer > 0:
+            self.damage_timer -= 1
+            if self.damage_timer == 0:
+                self.damage = self.base_damage
+
+        if self.speed_timer > 0:
+            self.speed_timer -= 1
+
+            if self.speed_timer == 0:
+                self.speed = self.base_speed
+                self.movement.speed = self.base_speed
 
         self.hurtbox.update(
             self.x - self.width // 2 + 40,
@@ -263,7 +301,6 @@ class Player:
         )
 
 
-
     def punch(self):
         if self.busy or self.is_finished():
             return
@@ -277,6 +314,10 @@ class Player:
         self.change_animation(
             "golpe"
         )
+
+        self.game.resource_manager.get_sound(
+            f"{self.character}_golpe"
+        ).play()
 
     def kick(self):
         if self.busy or self.is_finished():
@@ -292,6 +333,10 @@ class Player:
             "patada"
         )
 
+        self.game.resource_manager.get_sound(
+            f"{self.character}_patada"
+        ).play()
+
     def block(self):
         if self.busy or self.is_finished():
             return
@@ -301,17 +346,24 @@ class Player:
             "cubrirse"
         )
 
+        self.game.resource_manager.get_sound(
+            f"{self.character}_cubrirse"
+        ).play()
+
     def stop_block(self):
         self.blocking = False
         self.busy = False
 
     def stop_move(self):
+        sonido = self.game.resource_manager.get_sound(
+            f"{self.character}_caminar"
+        )
+
+        sonido.stop()
+        self.walk_sound_playing = False
+
         if not self.busy and not self.movement.jumping:
-            self.change_animation(
-                "idle"
-            )
-
-
+            self.change_animation("idle")
 
     def receive_damage(self, damage):
         damage, change = self.health.receive_damage(
@@ -328,12 +380,18 @@ class Player:
             self.change_animation(
                 "derrota"
             )
+            self.game.resource_manager.get_sound(
+                f"{self.character}_derrota"
+            ).play()
 
         else:
             if change:
                 self.change_animation(
                     "recibir_golpe"
                 )
+                self.game.resource_manager.get_sound(
+                    f"{self.character}_recibir_golpe"
+                ).play()
 
         return damage
 

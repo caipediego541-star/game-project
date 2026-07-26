@@ -107,6 +107,9 @@ class TournamentState(State):
         852,
         False
         )
+
+        self.game.item_manager.items.clear()
+        self.game.item_manager.spawn_timer = 0
         # Crear un nuevo estado de pelea para limpiar la ronda anterior
         self.fight = FightState(self.game)
 
@@ -114,16 +117,17 @@ class TournamentState(State):
         fondo = pygame.transform.scale(
             self.background,
             (config.ANCHO, config.ALTO)
-    )
+        )
 
         screen.blit(fondo, (0, 0))
+
+        self.game.item_manager.draw(screen)
 
         self.game.player1.draw(screen)
         self.game.player2.draw(screen)
 
         if self.game.hud:
             self.game.hud.draw(screen)
-
     def handle_events(self, events):
         return super().handle_events(events)
    

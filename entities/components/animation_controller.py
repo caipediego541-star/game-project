@@ -15,7 +15,7 @@ class AnimationController:
             "patada": 0.3,
             "cubrirse": 0.3,
             "recibir_golpe": 0.18,
-            "derrota": 0.18,
+            "derrota": 0.15,
             "victoria": 0.15
         }
 

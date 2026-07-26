@@ -28,10 +28,15 @@ class ResourceManager:
         )
 
     def load_sound(self, name, path):
-        sound = pygame.mixer.Sound(
-            path
+
+        sound = pygame.mixer.Sound(path)
+
+        sound.set_volume(
+            0.9
         )
+
         self.sounds[name] = sound
+
         return sound
 
     def get_sound(self, name):

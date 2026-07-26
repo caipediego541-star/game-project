@@ -39,7 +39,16 @@ class ItemManager:
             "laptop",
             "python",
             "router",
-            "calculadora"
+            "calculadora",
+            "mate",
+            "mate",
+            "cafe",
+            "cafe",
+            "laptop",
+            "laptop",
+            "mate",
+            "mate",
+            "cafe"
 
         ]
 
@@ -83,6 +92,7 @@ class ItemManager:
 
             self.game.player2
         ]
+
         for item in self.items[:]:
             for player in players:
                 if player:
@@ -93,7 +103,10 @@ class ItemManager:
                         if player.inventory.add_item(
                             item
                         ):
-
+                            self.game.resource_manager.get_sound(
+                                        "recoger_item"
+                                    ).play()
+                            
                             self.items.remove(
                                 item
                             )

@@ -1,12 +1,11 @@
 import pygame
 import config
-from utils.resource_loader import (IMAGES, ITEMS, BOTONES)
+from utils.resource_loader import (IMAGES, ITEMS, BOTONES, SOUNDS)
 
 from managers.state_manager import StateManager
 
 from patterns.state.mainMenuState import MainMenuState
 from patterns.state.fightState import FightState
-from patterns.state.fightStateBot import FightStateBot
 from patterns.state.pauseState import PauseState
 from patterns.state.victoryState import VictoryState
 from patterns.state.torneoState import TournamentState
@@ -14,7 +13,8 @@ from patterns.state.torneoState import TournamentState
 from patterns.factory.player.human_player_factory import HumanPlayerFactory
 from patterns.factory.player.bot_player_factory import BotPlayerFactory
 
-from patterns.strategy.hard_bot_strategy import HardBotStrategy
+from patterns.strategy.easy_bot_strategy import EasyBotStrategy
+
 
 from core.stage import Stage
 from core.control_config import ControlsConfig
@@ -134,40 +134,9 @@ class Game:
             if evento.type == pygame.QUIT:
                 self.running = False
 
-            elif evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_1:
-                    self.state_manager.set_state(
-                        MainMenuState(self)
-                    )
-
-                elif evento.key == pygame.K_2:
-                    self.iniciar_pelea(
-                        False
-                    )
-
-                elif evento.key == pygame.K_3:
-                    self.state_manager.set_state(
-                        PauseState(self)
-                    )
-
-                elif evento.key == pygame.K_4:
-                    self.state_manager.set_state(
-                        VictoryState(self)
-                    )
-
-                elif evento.key == pygame.K_5:
-                    self.state_manager.set_state(
-                        TournamentState(self)
-                    )
-
-                elif evento.key == pygame.K_6:
-                    self.iniciar_pelea(
-                        True
-                    )
-
             if isinstance(
                 self.state_manager.current_state,
-                (FightState, FightStateBot, TournamentState)
+                (FightState, TournamentState)
             ):
                 self.input_manager.manejar_evento(
                     evento
@@ -182,7 +151,7 @@ class Game:
         contra_bot=False
     ):
         if contra_bot:
-            estrategia = HardBotStrategy()
+            estrategia = EasyBotStrategy()
             self.player2 = self.bot_factory.create_player(
                 self,
                 "profe",
@@ -211,12 +180,9 @@ class Game:
         )
 
         self.item_manager.items.clear()
-        if contra_bot:
-            self.state_manager.set_state(
-                FightStateBot(self))
-        else:
-            self.state_manager.set_state(
-                FightState(self))
+        
+        self.state_manager.set_state(
+            FightState(self))
         
 
     def update(self):
@@ -287,6 +253,12 @@ class Game:
 
         for nombre, direccion in BOTONES.items():
             self.resource_manager.load_image(
+                nombre,
+                direccion
+            )
+
+        for nombre, direccion in SOUNDS.items():
+            self.resource_manager.load_sound(
                 nombre,
                 direccion
             )

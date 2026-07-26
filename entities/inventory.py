@@ -48,10 +48,13 @@ class Inventory:
         )
 
         if item:
-            print(f"{player.character} usó {item.name}")
             item.use(
                 player
             )
+            
+            player.game.resource_manager.get_sound(
+            "usar_item"
+            ).play()
 
     def get_items(self):
         return self.slots

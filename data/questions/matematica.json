@@ -1,0 +1,182 @@
+[
+    {
+        "pregunta": "QUE ES UNA MATRIZ?",
+        "opciones": [
+            "TABLA",
+            "NUMERO",
+            "ECUACION"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "COMO SE ORGANIZAN LOS ELEMENTOS DE UNA MATRIZ?",
+        "opciones": [
+            "PUNTOS",
+            "FILAS",
+            "CIRCULOS"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "COMO SE LLAMA UNA MATRIZ DE 2 FILAS Y 3 COLUMNAS?",
+        "opciones": [
+            "3X3",
+            "1X2",
+            "2X3"
+        ],
+        "correcta": 2
+    },
+    {
+        "pregunta": "QUE OPERACION SUMA MATRICES?",
+        "opciones": [
+            "SUMA",
+            "DIVISION",
+            "POTENCIA"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE DEBEN TENER DOS MATRICES PARA SUMARSE?",
+        "opciones": [
+            "MISMO VALOR",
+            "IGUAL ORDEN",
+            "MISMO COLOR"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE MATRIZ TIENE UNOS EN LA DIAGONAL PRINCIPAL?",
+        "opciones": [
+            "NULA",
+            "IDENTIDAD",
+            "RECTANGULAR"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE VALORES TIENE LA DIAGONAL DE UNA MATRIZ IDENTIDAD?",
+        "opciones": [
+            "UNOS",
+            "CEROS",
+            "DOS"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE REPRESENTA EL DETERMINANTE?",
+        "opciones": [
+            "VECTOR",
+            "VALOR",
+            "FILA"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE MATRIZ TIENE UNA SOLA FILA?",
+        "opciones": [
+            "COLUMNA",
+            "CUADRADA",
+            "FILA"
+        ],
+        "correcta": 2
+    },
+    {
+        "pregunta": "QUE MATRIZ TIENE IGUAL NUMERO DE FILAS Y COLUMNAS?",
+        "opciones": [
+            "CUADRADA",
+            "NULA",
+            "RECTANGULAR"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE ES UN CONJUNTO?",
+        "opciones": [
+            "OPERACION",
+            "GRUPO",
+            "NUMERO"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "COMO SE REPRESENTAN NORMALMENTE LOS CONJUNTOS?",
+        "opciones": [
+            "LLAVES",
+            "LINEAS",
+            "PUNTOS"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE SIMBOLO INDICA PERTENENCIA?",
+        "opciones": [
+            "PLUS",
+            "PERTENECE",
+            "IGUAL"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE OPERACION UNE DOS CONJUNTOS?",
+        "opciones": [
+            "INTERSECCION",
+            "DIVISION",
+            "UNION"
+        ],
+        "correcta": 2
+    },
+    {
+        "pregunta": "QUE OPERACION BUSCA ELEMENTOS COMUNES?",
+        "opciones": [
+            "INTERSECCION",
+            "UNION",
+            "RESTA"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE CONJUNTO NO TIENE ELEMENTOS?",
+        "opciones": [
+            "UNIVERSAL",
+            "VACIO",
+            "INFINITO"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE SIGNIFICA QUE DOS NUMEROS SEAN CONGRUENTES?",
+        "opciones": [
+            "SON OPUESTOS",
+            "TIENEN MISMO RESTO",
+            "SON IGUALES"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "COMO SE ESCRIBE LA CONGRUENCIA?",
+        "opciones": [
+            "CONGRUENTE",
+            "IGUAL",
+            "MODULO"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "LA CONGRUENCIA SE RELACIONA CON QUE OPERACION?",
+        "opciones": [
+            "MODULO",
+            "RAIZ",
+            "SUMA"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "DOS NUMEROS CONGRUENTES TIENEN IGUAL?",
+        "opciones": [
+            "VALOR",
+            "SIGNO",
+            "RESTO"
+        ],
+        "correcta": 2
+    }
+]

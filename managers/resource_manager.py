@@ -44,17 +44,14 @@ class ResourceManager:
             name
         )
 
-    def load_font(self, name, path, size):
-        font = pygame.font.Font(
-            path,
-            size
-        )
-        self.fonts[name] = font
-        return font
+    def load_font(self, name, path):
+        self.fonts[name] = path
 
-    def get_font(self, name):
-        return self.fonts.get(
-            name
+    def get_font(self, name, size):
+
+        return pygame.font.Font(
+            self.fonts[name],
+            size
         )
 
     def load_animation(self, name, folder):

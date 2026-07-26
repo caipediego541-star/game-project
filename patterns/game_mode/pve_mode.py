@@ -1,8 +1,7 @@
 from ui.hud import HUD
 
 from patterns.game_mode.game_mode import GameMode
-from patterns.state.fightStateBot import FightStateBot
-
+from patterns.state.fightState import FightState
 from patterns.strategy.hard_bot_strategy import HardBotStrategy
 
 
@@ -15,7 +14,7 @@ class PvEMode(GameMode):
     def start(self, game):
 
         game.state_manager.set_state(
-            FightStateBot(game)
+            FightState(game)
         )
 
         estrategia = HardBotStrategy()

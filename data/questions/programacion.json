@@ -1,0 +1,182 @@
+[
+    {
+        "pregunta": "QUE LENGUAJE SE USA CON PYGAME?",
+        "opciones": [
+            "PYTHON",
+            "JAVA",
+            "HTML"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE ESTRUCTURA GUARDA VARIOS VALORES?",
+        "opciones": [
+            "VARIABLE",
+            "LISTA",
+            "FUNCION"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE PALABRA CREA UNA FUNCION EN PYTHON?",
+        "opciones": [
+            "DEF",
+            "CLASS",
+            "FUNC"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE SIMBOLO INICIA UN COMENTARIO EN PYTHON?",
+        "opciones": [
+            "//",
+            "#",
+            "/*"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE GUARDA UN DATO?",
+        "opciones": [
+            "VARIABLE",
+            "BUCLE",
+            "CLASE"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE PALABRA CREA UNA CLASE?",
+        "opciones": [
+            "NEW",
+            "CLASS",
+            "OBJECT"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE CICLO REPITE CODIGO?",
+        "opciones": [
+            "IF",
+            "WHILE",
+            "FOR"
+        ],
+        "correcta": 2
+    },
+    {
+        "pregunta": "QUE TIPO GUARDA TEXTO?",
+        "opciones": [
+            "STRING",
+            "INTEGER",
+            "BOOLEAN"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE TIPO GUARDA VERDADERO O FALSO?",
+        "opciones": [
+            "FLOAT",
+            "BOOLEAN",
+            "STRING"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE GUARDA DATOS CON CLAVE Y VALOR?",
+        "opciones": [
+            "LISTA",
+            "TUPLA",
+            "DICCIONARIO"
+        ],
+        "correcta": 2
+    },
+    {
+        "pregunta": "QUE PALABRA DEVUELVE UN VALOR?",
+        "opciones": [
+            "RETURN",
+            "PRINT",
+            "INPUT"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE COMANDO MUESTRA TEXTO EN PANTALLA?",
+        "opciones": [
+            "PRINT",
+            "SHOW",
+            "DISPLAY"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE ESTRUCTURA TOMA DECISIONES?",
+        "opciones": [
+            "FOR",
+            "IF",
+            "CLASS"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE SIGNIFICA POO?",
+        "opciones": [
+            "PROGRAMACION ORIENTADA A OBJETOS",
+            "PROGRAMA ONLINE",
+            "PROCESO OPERATIVO"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE ES UNA INSTANCIA?",
+        "opciones": [
+            "UN ERROR",
+            "UN OBJETO",
+            "UN ARCHIVO"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE SIMBOLO COMPARA IGUALDAD?",
+        "opciones": [
+            "=",
+            "==",
+            "+"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE HERRAMIENTA INSTALA PAQUETES PYTHON?",
+        "opciones": [
+            "PIP",
+            "GIT",
+            "NODE"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE HERRAMIENTA CONTROLA VERSIONES?",
+        "opciones": [
+            "PYTHON",
+            "GIT",
+            "FLASK"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE FRAMEWORK USA PYTHON PARA WEB?",
+        "opciones": [
+            "REACT",
+            "FLASK",
+            "LARAVEL"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE GUARDA ELEMENTOS ORDENADOS?",
+        "opciones": [
+            "LISTA",
+            "CLASE",
+            "CONDICION"
+        ],
+        "correcta": 0
+    }
+]

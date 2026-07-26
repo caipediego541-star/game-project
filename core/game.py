@@ -1,8 +1,6 @@
 import pygame
 import config
-from utils.resource_loader import (IMAGES, ITEMS, BOTONES, SOUNDS)
-
-from managers.state_manager import StateManager
+from utils.resource_loader import (IMAGES, ITEMS, BOTONES, SOUNDS, FONTS)
 
 from patterns.state.mainMenuState import MainMenuState
 from patterns.state.fightState import FightState
@@ -23,6 +21,8 @@ from managers.input_manager import InputManager
 from managers.combat_manager import CombatManager
 from managers.resource_manager import ResourceManager
 from managers.item_manager import ItemManager
+from managers.question_manager import QuestionManager
+from managers.state_manager import StateManager
 
 from patterns.factory.item.item_factory import ItemFactory
 from patterns.singleton.sound_manager import SoundManager
@@ -77,6 +77,7 @@ class Game:
         )
 
         self.factory = HumanPlayerFactory()
+        self.question_manager = QuestionManager()
         self.bot_factory = BotPlayerFactory()
         self.player1 = self.factory.create_player(
             self,
@@ -140,6 +141,9 @@ class Game:
             ):
                 self.input_manager.manejar_evento(
                     evento
+                )
+                pregunta = self.question_manager.get_question(
+                    "redes"
                 )
 
         self.state_manager.handle_events(
@@ -262,6 +266,12 @@ class Game:
                 nombre,
                 direccion
             )
+
+        for nombre, direccion in FONTS.items():
+                    self.resource_manager.load_font(
+                        nombre,
+                        direccion
+                    )
 
 
     def scale_game(self):

@@ -1,0 +1,182 @@
+[
+    {
+        "pregunta": "QUE PROTOCOLO ASIGNA IP AUTOMATICAMENTE?",
+        "opciones": [
+            "DHCP",
+            "HTTP",
+            "FTP"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE DISPOSITIVO CONECTA REDES DIFERENTES?",
+        "opciones": [
+            "SWITCH",
+            "ROUTER",
+            "CABLE"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE PROTOCOLO SE USA PARA NAVEGAR PAGINAS WEB?",
+        "opciones": [
+            "HTTP",
+            "DNS",
+            "IP"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE SIGNIFICA IP?",
+        "opciones": [
+            "INTERNET PROTOCOL",
+            "INTERNET PROGRAM",
+            "INTERNAL PORT"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE PROTOCOLO TRADUCE DOMINIOS A IP?",
+        "opciones": [
+            "FTP",
+            "DNS",
+            "TCP"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE DISPOSITIVO CONECTA EQUIPOS EN UNA LAN?",
+        "opciones": [
+            "ROUTER",
+            "MODEM",
+            "SWITCH"
+        ],
+        "correcta": 2
+    },
+    {
+        "pregunta": "QUE PROTOCOLO PERMITE TRANSFERIR ARCHIVOS?",
+        "opciones": [
+            "FTP",
+            "HTTP",
+            "SMTP"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE CAPA USA DIRECCIONES IP?",
+        "opciones": [
+            "TRANSPORTE",
+            "RED",
+            "FISICA"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE PROTOCOLO ENVIA CORREOS ELECTRONICOS?",
+        "opciones": [
+            "SMTP",
+            "DNS",
+            "DHCP"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE SIGNIFICA LAN?",
+        "opciones": [
+            "LOCAL AREA NETWORK",
+            "LARGE ACCESS NODE",
+            "LOCAL ACCESS NUMBER"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE MEDIO USA SEÑALES INALAMBRICAS?",
+        "opciones": [
+            "FIBRA",
+            "WIFI",
+            "CABLE"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE PROTOCOLO ASEGURA LA COMUNICACION WEB?",
+        "opciones": [
+            "HTTPS",
+            "FTP",
+            "ARP"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE IDENTIFICA UNA COMPUTADORA EN UNA RED?",
+        "opciones": [
+            "IP",
+            "CPU",
+            "RAM"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE PROTOCOLO PERMITE CONEXION REMOTA?",
+        "opciones": [
+            "SSH",
+            "HTML",
+            "DNS"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE DISPOSITIVO ENTREGA INTERNET AL HOGAR?",
+        "opciones": [
+            "SWITCH",
+            "MODEM",
+            "MONITOR"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE SIGNIFICA WAN?",
+        "opciones": [
+            "WIDE AREA NETWORK",
+            "WIRELESS ACCESS NODE",
+            "WEB AREA NETWORK"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE PROTOCOLO CONTROLA LA TRANSMISION DE DATOS?",
+        "opciones": [
+            "TCP",
+            "DNS",
+            "HTML"
+        ],
+        "correcta": 0
+    },
+    {
+        "pregunta": "QUE DIRECCION IDENTIFICA UNA TARJETA DE RED?",
+        "opciones": [
+            "IP",
+            "MAC",
+            "URL"
+        ],
+        "correcta": 1
+    },
+    {
+        "pregunta": "QUE TOPOLOGIA CONECTA TODOS A UN PUNTO CENTRAL?",
+        "opciones": [
+            "ANILLO",
+            "BUS",
+            "ESTRELLA"
+        ],
+        "correcta": 2
+    },
+    {
+        "pregunta": "QUE COMANDO MUESTRA CONFIGURACION DE RED?",
+        "opciones": [
+            "IPCONFIG",
+            "FORMAT",
+            "MKDIR"
+        ],
+        "correcta": 0
+    }
+]

@@ -7,6 +7,7 @@ IMAGES = {
     "belen": "assets/images/personajes/belen.png",
     "profe": "assets/images/personajes/profe.png",
     "inventario": "assets/images/ui/inventario.png",
+    "question_box": "assets/images/ui/fondo_cuestionario.png",
 
     "boton_jugar": "assets/images/boton_jugar.png",
     "boton_salir": "assets/images/boton_salir.png",
@@ -30,7 +31,9 @@ ITEMS = {
 }
 
 BOTONES = {
-    "pausa": "assets/images/ui/botones/pausa.png"
+    "pausa": "assets/images/ui/botones/pausa.png",
+    "question_button": "assets/images/ui/botones/boton_cuestionario.png",
+    "question_button_hover": "assets/images/ui/botones/boton_cuestionario_hover.png"
 }
 
 SOUNDS = {
@@ -52,3 +55,7 @@ SOUNDS = {
 
     "usar_item": "assets/sounds/usar_item.wav",
     "recoger_item": "assets/sounds/recoger_item.wav"}
+
+FONTS = {
+    "pixel": "assets/fonts/pixel.ttf"
+    }

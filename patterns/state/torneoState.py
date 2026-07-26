@@ -1,36 +1,33 @@
 import pygame
-from patterns.state.stateBase import State
-from ui.hud import HUD
 import config
-from utils.constants import INITAL_LIVES, INVULNAERABILITY_TIME
 
-from patterns.game_mode.game_mode import GameMode
-from patterns.state.fightState import FightState
+from patterns.state.stateBase import State
+
+from combat.combat_controller import CombatController
 
 from core.control_config import ControlsConfig
+
+from ui.hud import HUD
+
 
 class TournamentState(State):
 
     def __init__(self, game):
-        
-        
-        super().__init__(game)
 
-        self.fight = FightState(game)
+        super().__init__(game)
 
         self.name = "Tournament"
 
         self.round = 1
-
         self.max_rounds = 3
 
         self.player1_score = 0
-
         self.player2_score = 0
 
         self.player1_lives = 2
-
         self.player2_lives = 2
+
+        self.combat = CombatController(game)
 
     def start(self, game):
 
@@ -51,45 +48,48 @@ class TournamentState(State):
 
         self.background = game.resource_manager.get_image(
             "tournament_background"
-            )
+        )
+
+        self.combat.start_music()
+
+    def handle_events(self, events):
+
+        if self.game.hud:
+            for event in events:
+                self.game.hud.handle_event(event)
 
     def update(self):
-        
-        self.fight.update()
 
-        if not self.fight.combate_terminado:
+        self.combat.update()
+
+        if not self.combat.combate_terminado:
             return
 
-        if self.fight.tiempo_victoria < self.fight.esperar_victoria:
+        if self.combat.tiempo_victoria < self.combat.esperar_victoria:
             return
 
-        if self.fight.combate_terminado:
+        if self.game.player1.health.dead:
 
-            if self.game.player1.health.dead:
-                self.player2_score += 1
-                self.player1_lives - 1
-                self.next_round()
-                return
+            self.player2_score += 1
+            self.player1_lives -= 1
 
-            elif self.game.player2.health.dead:
-                self.player1_score += 1
-                self.player2_lives -1
+            self.next_round()
 
-                self.next_round()
-                return
+        elif self.game.player2.health.dead:
+
+            self.player1_score += 1
+            self.player2_lives -= 1
+
+            self.next_round()
 
     def next_round(self):
-        
-        if self.player1_score == 2:
 
+        if self.player1_score == self.max_rounds - 1:
             print("Jugador 1 gana el torneo")
-
             return
 
-        if self.player2_score == 2:
-
+        if self.player2_score == self.max_rounds - 1:
             print("Jugador 2 gana el torneo")
-
             return
 
         self.round += 1
@@ -97,37 +97,28 @@ class TournamentState(State):
         self.reset_players()
 
     def reset_players(self):
-        
-        self.game.player1.reset(
-        426,
-        True
-        )
-
-        self.game.player2.reset(
-        852,
-        False
-        )
-
-        self.game.item_manager.items.clear()
-        self.game.item_manager.spawn_timer = 0
-        # Crear un nuevo estado de pelea para limpiar la ronda anterior
-        self.fight = FightState(self.game)
+       self.combat.reset_round()
 
     def draw(self, screen):
+
         fondo = pygame.transform.scale(
             self.background,
-            (config.ANCHO, config.ALTO)
+            (
+                config.ANCHO,
+                config.ALTO
+            )
         )
 
-        screen.blit(fondo, (0, 0))
+        screen.blit(
+            fondo,
+            (0, 0)
+        )
 
-        self.game.item_manager.draw(screen)
+        self.combat.draw(screen)
 
         self.game.player1.draw(screen)
+
         self.game.player2.draw(screen)
 
         if self.game.hud:
             self.game.hud.draw(screen)
-    def handle_events(self, events):
-        return super().handle_events(events)
-   

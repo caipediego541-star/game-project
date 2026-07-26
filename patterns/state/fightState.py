@@ -1,90 +1,38 @@
 import pygame
 import config
-
 from patterns.state.stateBase import State
+from combat.combat_controller import CombatController
+from patterns.state.victoryState import VictoryState
 
 
 class FightState(State):
+
     def __init__(self, game):
         super().__init__(game)
         self.background = self.game.resource_manager.get_image(
             "fight_background1"
         )
 
-        self.combate_terminado = False
-        self.tiempo_victoria = 0
-        self.esperar_victoria = 120
-        self.tiempo_derrota = 0
-        self.esperar_derrota = 200 
-        self.ganador = None
-
-        if not hasattr(
-            self.game,
-            "item_manager"
-            ):
-            self.game.item_manager = self.game.create_item_manager()
-
-        pygame.mixer.music.load(
-            "assets/sounds/pelea.mp3"
-        )
-
-        pygame.mixer.music.set_volume(
-            0.1
-        )
-
-        pygame.mixer.music.play(-1)
-    def handle_events(self, events):
-        pass
+        self.combat = CombatController(game)
+        self.combat.start()
+        self.cambio_victoria = False
 
     def update(self):
-        jugador1 = self.game.player1
-        jugador2 = self.game.player2
+        self.combat.update()
+        if (
+            self.combat.combate_terminado
+            and
+            self.combat.tiempo_victoria >= self.combat.esperar_victoria
+            and not self.cambio_victoria
+        ):
 
-        if jugador1:
-            jugador1.update()
-
-        if jugador2:
-            jugador2.update()
-
-        self.game.combat_manager.check_collision(
-            jugador1,
-            jugador2
-        )
-
-        self.game.item_manager.update()
-
-        if not self.combate_terminado:
-            if jugador1.health.dead:
-                self.finalizar_combate(
-                    jugador2
+            self.cambio_victoria = True
+            self.game.state_manager.set_state(
+                VictoryState(
+                    self.game,
+                    self.combat.ganador
                 )
-
-            elif jugador2.health.dead:
-                self.finalizar_combate(
-                    jugador1
-                )
-
-        else:
-            self.tiempo_derrota += 1
-            if self.tiempo_derrota >= self.esperar_derrota:
-
-                if self.ganador:
-                    self.ganador.change_animation(
-                        "victoria"
-                    )
-                self.tiempo_victoria += 1
-
-                if self.tiempo_victoria >= self.esperar_victoria:
-                    print("Cambiar a pantalla de victoria")
-            return
-
-    def finalizar_combate(self, ganador):
-        self.combate_terminado = True
-        self.ganador = ganador
-
-        ganador.busy = True
-        ganador.blocking = False
-        ganador.hitbox.desactivar()
+            )
 
     def draw(self, screen):
 
@@ -93,32 +41,19 @@ class FightState(State):
             (config.ANCHO, config.ALTO)
         )
 
-        screen.blit(
-            fondo,
-            (0, 0)
-        )
+        screen.blit(fondo, (0, 0))
 
-        self.game.item_manager.draw(
-            screen
-        )
+        self.combat.draw(screen)
 
-        self.game.player1.draw(
-            screen
-        )
+        self.game.player1.draw(screen)
 
         if self.game.player2:
-            self.game.player2.draw(
-                screen
-            )
+            self.game.player2.draw(screen)
 
         if self.game.hud:
-            self.game.hud.draw(
-                screen
-            )
+            self.game.hud.draw(screen)
 
     def handle_events(self, events):
         if self.game.hud:
             for event in events:
-                self.game.hud.handle_event(
-                    event
-                )
+                self.game.hud.handle_event(event)

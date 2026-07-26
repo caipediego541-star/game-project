@@ -1,20 +1,47 @@
 import pygame
+
 from patterns.state.stateBase import State
 
+
 class VictoryState(State):
-    def __init__(self, game):
+
+    def __init__(self, game, ganador):
+
         super().__init__(game)
-        
+
+        self.ganador = ganador
+
+        self.font = pygame.font.SysFont(
+            "Arial",
+            48
+        )
+
+
     def handle_events(self, events):
         pass
+
 
     def update(self):
         pass
 
+
     def draw(self, screen):
-        screen.fill((120, 120, 0))
+        screen.fill(
+            (120, 120, 0)
+        )
 
-        font = pygame.font.SysFont("Arial", 48)
-        text = font.render("VICTORY STATE", True, (255, 255, 255))
+        if self.ganador == self.game.player1:
+            mensaje = "PLAYER 1 GANO"
 
-        screen.blit(text, (150, 100))
+        else:
+            mensaje = "PLAYER 2 GANO"
+
+        text = self.font.render(
+            mensaje,
+            True,
+            (255, 255, 255)
+        )
+        screen.blit(
+            text,
+            (150, 100)
+        )

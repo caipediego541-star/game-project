@@ -77,3 +77,27 @@ class SoundManager:
 
     def is_music_on(self):
         return self.music_on
+
+    def change_music(self, path, fade_time=1000):
+        pygame.mixer.music.fadeout(
+            fade_time
+        )
+        pygame.time.delay(
+            fade_time
+        )
+        pygame.mixer.music.load(
+            path
+        )
+        pygame.mixer.music.set_volume(
+            self.volume
+        )
+        pygame.mixer.music.play(-1)
+
+    def play_sound(self, sound):
+        sound.play()
+
+    def play_sound_loop(self, sound):
+        sound.play(-1)
+
+    def stop_sound(self, sound):
+        sound.stop()

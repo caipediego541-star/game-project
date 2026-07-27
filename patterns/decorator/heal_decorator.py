@@ -1,12 +1,11 @@
-from entities.items.basic_item import BasicItem
+from patterns.decorator.item_decorator import ItemDecorator
 
-
-class Mate(BasicItem):
+class HealDecorator(ItemDecorator):
     def use(self, player):
+        super().use(player)
         curacion = int(
             player.health.health * 0.60
         )
-
         player.health.heal(
             curacion
         )

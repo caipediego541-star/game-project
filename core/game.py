@@ -142,10 +142,6 @@ class Game:
                 self.input_manager.manejar_evento(
                     evento
                 )
-                pregunta = self.question_manager.get_question(
-                    "redes"
-                )
-
         self.state_manager.handle_events(
             eventos
         )

@@ -1,7 +1,7 @@
 import pygame
 import config
 from patterns.factory.button_factory import ButtonFactory
-from data.exam_items import EXAM_ITEMS
+import random
 
 class QuestionBox:
     def __init__(self, game):
@@ -9,6 +9,8 @@ class QuestionBox:
         self.game = game
 
         self.active = False
+        self.bot_timer = 0
+        self.bot_delay = 120 
 
         self.item = None
         self.player_attacker = None
@@ -76,6 +78,7 @@ class QuestionBox:
         self.box_y = 0
 
     def start_question(self, categoria, attacker, target):
+        self.bot_timer = 0
         self.active = True
         self.player_attacker = attacker
         self.player_target = target
@@ -181,9 +184,9 @@ class QuestionBox:
             ))
 
         if self.player_target == self.game.player1:
-            titulo = "PLAYER 1 RESPONDE"
+            titulo = "JUGADOR 1 RESPONDE"
         else:
-            titulo = "PLAYER 2 RESPONDE"
+            titulo = "JUGADOR 2 RESPONDE"
 
         title = self.title_font.render(
             titulo,
@@ -204,7 +207,7 @@ class QuestionBox:
             screen,
             self.question,
             self.font,
-            (self.box_x + 100, self.box_y + 70), self.box_width - 80)
+            (self.box_x + 100, self.box_y + 75), self.box_width - 70)
 
         mouse = self.game.get_mouse_position()
 
@@ -284,7 +287,17 @@ class QuestionBox:
 
         self.timer_counter += 1
 
-
+        if self.player_target.is_bot:
+            self.bot_timer += 1
+            if self.bot_timer >= self.bot_delay:
+                respuesta = random.randint(
+                    0,
+                    len(self.options) - 1
+                )
+                self.check_answer(
+                    respuesta
+                )
+                
         # 60 FPS
         if self.timer_counter >= 60:
 

@@ -14,6 +14,7 @@ class Player:
 
         self.character = character
         self.game = game
+        self.is_bot = False
 
         self.profile_picture = pygame.image.load(
             profile_picture

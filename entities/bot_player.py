@@ -21,6 +21,7 @@ class BotPlayer(Player):
             strategy.health
         )
         self.damage = strategy.damage
+        self.is_bot = True
 
     def update(self):
         self.bot_controller.update()

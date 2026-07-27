@@ -1,49 +1,60 @@
-from entities.items.cafe import Cafe
-from entities.items.laptop import Laptop
-from entities.items.mate import Mate
-from entities.items.examen import Examen
+from entities.item import Item
+
+from patterns.decorator.heal_decorator import HealDecorator
+from patterns.decorator.speed_decorator import SpeedDecorator
+from patterns.decorator.damage_decorator import DamageDecorator
+from patterns.decorator.exam_decorator import ExamDecorator
+
 
 class ItemFactory:
     def __init__(self, resource_manager):
         self.resource_manager = resource_manager
 
     def create_item(self, item_name):
-
         image = self.resource_manager.get_image(
             item_name
         )
-
         if item_name == "mate":
-            return Mate(item_name, image)
+            return HealDecorator(
+                Item(
+                    item_name,
+                    image
+                ))
 
         elif item_name == "cafe":
-            return Cafe(item_name, image)
+            return SpeedDecorator(
+                Item(
+                    item_name,
+                    image
+                ))
 
         elif item_name == "laptop":
-            return Laptop(item_name, image)
+            return DamageDecorator(
+                Item(
+                    item_name,
+                    image
+                ))
 
         elif item_name == "python":
-
-            return Examen(
-                item_name,
-                image,
-                "programacion"
-            )
-
+            return ExamDecorator(
+                Item(
+                    item_name,
+                    image,
+                    "programacion"
+                ))
 
         elif item_name == "router":
-
-            return Examen(
-                item_name,
-                image,
-                "redes"
-            )
-
+            return ExamDecorator(
+                Item(
+                    item_name,
+                    image,
+                    "redes"
+                ))
 
         elif item_name == "calculadora":
-
-            return Examen(
-                item_name,
-                image,
-                "matematica"
-            )
+            return ExamDecorator(
+                Item(
+                    item_name,
+                    image,
+                    "matematica"
+                ))

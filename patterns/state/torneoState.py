@@ -5,6 +5,7 @@ from patterns.state.stateBase import State
 from combat.combat_controller import CombatController
 from core.control_config import ControlsConfig
 from ui.hud import HUD
+from ui.question_box import QuestionBox
 from patterns.state.victoryState import VictoryState
 from patterns.repository.tournament_repository import TournamentRepository
 
@@ -19,6 +20,7 @@ class TournamentState(State):
 
         self.round = 1
         self.max_rounds = 3
+        self.game.fight_state = self
 
         self.player1_score = 0
         self.player2_score = 0
@@ -30,6 +32,7 @@ class TournamentState(State):
         self.torneo_id = None
 
         self.combat = CombatController(game)
+        self.question_box = QuestionBox(game)
 
     def start(self, game):
         self.repository = TournamentRepository()
@@ -74,13 +77,20 @@ class TournamentState(State):
         self.combat.start_music()
 
     def handle_events(self, events):
+        for event in events:
 
-        if self.game.hud:
-            for event in events:
+            if self.question_box.active:
+                self.question_box.handle_event(event)
+                continue
+
+            if self.game.hud:
                 self.game.hud.handle_event(event)
 
     def update(self):
-
+        self.question_box.update()
+        if self.question_box.active:
+            return
+        
         self.combat.update()
 
         if not self.combat.combate_terminado:
@@ -89,18 +99,20 @@ class TournamentState(State):
         if self.combat.tiempo_victoria < self.combat.esperar_victoria:
             return
 
-        if self.game.player1.health.dead:
-            self.player2_score += 1
-            self.player1_lives -= 1
-            self.guardar_progreso()
-            self.next_round()
-
-        elif self.game.player2.health.dead:
+        if self.combat.ganador == self.game.player1:
             self.player1_score += 1
             self.player2_lives -= 1
             self.guardar_progreso()
             self.next_round()
 
+        elif self.combat.ganador == self.game.player2:
+            self.player2_score += 1
+            self.player1_lives -= 1
+            self.guardar_progreso()
+            self.next_round()
+        else:
+            self.next_round()
+            
     def next_round(self):
         if self.player1_score == self.max_rounds - 1:
             self.finalizar_torneo()
@@ -163,6 +175,8 @@ class TournamentState(State):
 
         if self.game.hud:
             self.game.hud.draw(screen)
+
+        self.question_box.draw(screen)
 
     def finalizar_torneo(self):
         if self.torneo_id is None:

@@ -14,6 +14,9 @@ class CombatController:
 
         self.tiempo_derrota = 0
         self.esperar_derrota = 200
+        self.tiempo_maximo = 90 
+        self.tiempo_restante = self.tiempo_maximo
+        self.timer_frames = 0
 
         self.ganador = None
 
@@ -21,9 +24,7 @@ class CombatController:
             self.game.item_manager = self.game.create_item_manager()
 
     def start(self):
-
         self.start_music()
-
         self.reset()
 
     def start_music(self):
@@ -34,6 +35,15 @@ class CombatController:
         pygame.mixer.music.play(-1)
 
     def update(self):
+        self.timer_frames += 1
+
+        if self.timer_frames >= 60:
+            self.timer_frames = 0
+            self.tiempo_restante -= 1
+
+            if self.tiempo_restante <= 0:
+                self.finalizar_por_tiempo()
+                return
 
         jugador1 = self.game.player1
         jugador2 = self.game.player2
@@ -95,7 +105,7 @@ class CombatController:
         )
 
         ganador.change_animation(
-            "victoria"
+            "victoria", force= True
         )
 
     def draw(self, screen):
@@ -105,20 +115,38 @@ class CombatController:
         )
 
     def reset(self):
-
+        self.tiempo_restante = self.tiempo_maximo
+        self.timer_frames = 0
         self.combate_terminado = False
-
         self.tiempo_victoria = 0
-
         self.tiempo_derrota = 0
-
         self.ganador = None
-
         self.game.item_manager.items.clear()
-
         self.game.item_manager.spawn_timer = 0
 
     def reset_round(self):
         self.game.player1.reset()
         self.game.player2.reset()
         self.reset()
+
+    def finalizar_por_tiempo(self):
+        if self.combate_terminado:
+            return
+    
+        vida1 = self.game.player1.health.health
+        vida2 = self.game.player2.health.health
+
+        if vida1 > vida2:
+            ganador = self.game.player1
+
+        elif vida2 > vida1:
+            ganador = self.game.player2
+
+        else:
+            ganador = self.game.player1  # empate temporalmente
+
+
+        self.finalizar_combate(
+            ganador
+        )
+    

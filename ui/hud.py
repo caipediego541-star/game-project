@@ -82,6 +82,11 @@ class HUD:
             config.ALTO - 120
         )
 
+        self.font = self.game.resource_manager.get_font(
+            "pixel",
+            30
+        )
+
     def draw(self, screen):
 
         screen.blit(
@@ -141,8 +146,53 @@ class HUD:
             self.pausa_image,
             self.pause_rect
         )
-        
 
+        combat = self.game.state_manager.current_state.combat
+
+        if not combat.combate_terminado:
+
+            tiempo = combat.tiempo_restante
+
+            texto = self.font.render(
+                str(tiempo),
+                True,
+                (255,255,255)
+            )
+
+            texto_rect = texto.get_rect(
+                center=(
+                    config.ANCHO // 2,
+                    30
+                )
+            )
+
+            self.draw_text_with_outline(
+                screen,
+                str(tiempo),
+                texto_rect,
+                (255,255,255)
+            )
+            self.draw_inventory_commands(
+            screen,
+            self.inventario1_pos,
+            [
+                "Z",
+                "X",
+                "C"
+            ]
+        )
+
+
+        self.draw_inventory_commands(
+            screen,
+            self.inventario2_pos,
+            [
+                "B",
+                "N",
+                "M"
+            ]
+        )
+                    
     def draw_inventory_items(self, screen, player, position):
         
         if not hasattr(player, "inventory"):
@@ -181,3 +231,60 @@ class HUD:
                 self.game.state_manager.set_state(
                     PauseState(self.game)
                 )
+
+    def draw_text_with_outline(self, screen, text, position, color, outline_color=(0,0,0), outline=3):
+        for x in range(-outline, outline + 1):
+            for y in range(-outline, outline + 1):
+
+                if x != 0 or y != 0:
+
+                    outline_text = self.font.render(
+                        text,
+                        True,
+                        outline_color
+                    )
+
+                    screen.blit(
+                        outline_text,
+                        (
+                            position[0] + x,
+                            position[1] + y
+                        )
+                    )
+
+
+        normal_text = self.font.render(
+            text,
+            True,
+            color
+        )
+
+        screen.blit(
+            normal_text,
+            position
+        )
+
+    def draw_inventory_commands(self, screen, position, commands):
+        for index, command in enumerate(commands):
+            texto = self.font.render(
+                command,
+                True,
+                (255,255,255)
+            )
+
+            x = position[0] + 55 + (index * 95)
+            y = position[1] - 30
+
+            texto_rect = texto.get_rect(
+                center=(
+                    x,
+                    y
+                )
+            )
+
+            self.draw_text_with_outline(
+                screen,
+                command,
+                texto_rect,
+                (255,255,255)
+            )

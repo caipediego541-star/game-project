@@ -207,7 +207,7 @@ class QuestionBox:
             screen,
             self.question,
             self.font,
-            (self.box_x + 100, self.box_y + 75), self.box_width - 70)
+            (self.box_x + 100, self.box_y + 75), self.box_width - 60)
 
         mouse = self.game.get_mouse_position()
 

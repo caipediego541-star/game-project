@@ -19,6 +19,7 @@ class SoundManager:
             return
 
         self.volume = 0.5
+        self.sound_volume = 1.0
         self.music_on = True
 
         self.sounds = []
@@ -97,7 +98,7 @@ class SoundManager:
 
     def play_sound(self, sound):
         sound.set_volume(
-            self.volume
+            self.sound_volume
         )
         sound.play()
 

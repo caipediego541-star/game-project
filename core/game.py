@@ -1,11 +1,10 @@
 import pygame
 import config
 from utils.resource_loader import (IMAGES, ITEMS, BOTONES, SOUNDS, FONTS)
-
+from database.setup import DatabaseSetup
 from patterns.state.mainMenuState import MainMenuState
 from patterns.state.fightState import FightState
 from patterns.state.pauseState import PauseState
-from patterns.state.victoryState import VictoryState
 from patterns.state.torneoState import TournamentState
 
 from patterns.factory.player.human_player_factory import HumanPlayerFactory
@@ -52,11 +51,15 @@ class Game:
         pygame.display.set_caption(
             config.TITULO
         )
-
-        self.resource_manager = ResourceManager()
-        self.cargar_recursos()
-        #cargar musica
+        
         self.sound_manager = SoundManager()
+        self.resource_manager = ResourceManager(
+            self.sound_manager
+        )
+        self.cargar_recursos()
+        DatabaseSetup.create_tables()
+
+        #cargar musica
         self.sound_manager.play_music(
              "assets/sounds/menu_music.mp3")
         self.fondo = self.resource_manager.get_image(

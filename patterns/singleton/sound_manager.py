@@ -1,13 +1,13 @@
 import pygame
-
-
 class SoundManager:
-
     _instance = None
 
     def __new__(cls):
         if cls._instance is None:
-            cls._instance = super(SoundManager, cls).__new__(cls)
+            cls._instance = super(
+                SoundManager, cls
+            ).__new__(cls)
+
             cls._instance.initialized = False
 
         return cls._instance
@@ -20,6 +20,8 @@ class SoundManager:
 
         self.volume = 0.5
         self.music_on = True
+
+        self.sounds = []
 
         pygame.mixer.init()
 
@@ -34,28 +36,29 @@ class SoundManager:
         )
         pygame.mixer.music.play(-1)
 
-
     def toggle_music(self):
-
         self.music_on = not self.music_on
-
         if self.music_on:
-            pygame.mixer.music.unpause()
+            pygame.mixer.music.set_volume(
+                self.volume
+            )
+            for sound in self.sounds:
+                sound.set_volume(
+                    self.volume
+                )
 
         else:
-            pygame.mixer.music.pause()
-
+            pygame.mixer.music.set_volume(0)
+            for sound in self.sounds:
+                sound.set_volume(0)
 
     def volume_up(self):
-
-        self.volume = round(self.volume + 0.1, 2)
+        self.volume += 0.1
 
         if self.volume > 1:
             self.volume = 1
 
-        pygame.mixer.music.set_volume(
-            self.volume
-        )
+        self.update_volume()
 
 
     def volume_down(self):
@@ -65,9 +68,8 @@ class SoundManager:
         if self.volume < 0:
             self.volume = 0
 
-        pygame.mixer.music.set_volume(
-            self.volume
-        )
+        self.update_volume()
+
     def set_volume(self, volume):
         pygame.mixer.music.set_volume(volume)
         self.volume = volume
@@ -94,10 +96,29 @@ class SoundManager:
         pygame.mixer.music.play(-1)
 
     def play_sound(self, sound):
+        sound.set_volume(
+            self.volume
+        )
         sound.play()
 
     def play_sound_loop(self, sound):
+        sound.set_volume(
+            self.volume
+        )
+
         sound.play(-1)
 
     def stop_sound(self, sound):
         sound.stop()
+
+    def update_volume(self):
+        pygame.mixer.music.set_volume(
+        self.volume)
+
+        for sound in self.sounds:
+            sound.set_volume(
+                self.volume
+            )
+
+    def register_sound(self, sound):
+        self.sounds.append(sound)

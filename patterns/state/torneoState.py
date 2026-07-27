@@ -2,12 +2,11 @@ import pygame
 import config
 
 from patterns.state.stateBase import State
-
 from combat.combat_controller import CombatController
-
 from core.control_config import ControlsConfig
-
 from ui.hud import HUD
+from patterns.state.victoryState import VictoryState
+from patterns.repository.tournament_repository import TournamentRepository
 
 
 class TournamentState(State):
@@ -26,10 +25,14 @@ class TournamentState(State):
 
         self.player1_lives = 2
         self.player2_lives = 2
+        self.repository = None
+        self.torneo = None
+        self.torneo_id = None
 
         self.combat = CombatController(game)
 
     def start(self, game):
+        self.repository = TournamentRepository()
 
         game.player2 = game.factory.create_player(
             game,
@@ -38,6 +41,24 @@ class TournamentState(State):
             False,
             "assets/images/personajes/profe.png"
         )
+
+        self.torneo = self.repository.obtener_torneo()
+        if self.torneo:
+            self.torneo_id = self.torneo["id"]
+            self.player1_score = (
+                self.torneo["victorias_jugador1"]
+            )
+            self.player2_score = (
+                self.torneo["victorias_jugador2"]
+            )
+            self.round = (
+                self.torneo["ronda_actual"]
+            )
+        else:
+            self.torneo_id = self.repository.crear_torneo(
+                game.player1.character,
+                game.player2.character
+            )
 
         ControlsConfig.configurar_jugador2(
             game.input_manager,
@@ -69,32 +90,52 @@ class TournamentState(State):
             return
 
         if self.game.player1.health.dead:
-
             self.player2_score += 1
             self.player1_lives -= 1
-
+            self.guardar_progreso()
             self.next_round()
 
         elif self.game.player2.health.dead:
-
             self.player1_score += 1
             self.player2_lives -= 1
-
+            self.guardar_progreso()
             self.next_round()
 
     def next_round(self):
-
         if self.player1_score == self.max_rounds - 1:
-            print("Jugador 1 gana el torneo")
+            self.finalizar_torneo()
+            self.game.state_manager.set_state(
+                VictoryState(
+                    self.game,
+                    self.game.player1
+                ))
             return
-
+        
         if self.player2_score == self.max_rounds - 1:
-            print("Jugador 2 gana el torneo")
+            self.finalizar_torneo()
+            self.game.state_manager.set_state(
+                VictoryState(
+                    self.game,
+                    self.game.player2
+                ))
             return
 
         self.round += 1
-
+        self.guardar_progreso()
         self.reset_players()
+        self.combat.start_music()
+
+    def guardar_progreso(self):
+        if self.torneo_id is None:
+            return
+
+        self.repository.actualizar_torneo(
+            self.torneo_id,
+            self.player1_score,
+            self.player2_score,
+            self.round,
+            "EN_CURSO"
+        )
 
     def reset_players(self):
        self.combat.reset_round()
@@ -122,3 +163,11 @@ class TournamentState(State):
 
         if self.game.hud:
             self.game.hud.draw(screen)
+
+    def finalizar_torneo(self):
+        if self.torneo_id is None:
+            return
+
+        self.repository.finalizar_torneo(
+            self.torneo_id
+        )

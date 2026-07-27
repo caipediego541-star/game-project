@@ -1,10 +1,11 @@
 import pygame
 import os
 
-
 class ResourceManager:
 
-    def __init__(self):
+    def __init__(self, sound_manager):
+        self.sound_manager = sound_manager
+
         self.images = {}
         self.sounds = {}
         self.fonts = {}
@@ -28,16 +29,13 @@ class ResourceManager:
         )
 
     def load_sound(self, name, path):
-
         sound = pygame.mixer.Sound(path)
-
-        sound.set_volume(
-            0.9
-        )
-
         self.sounds[name] = sound
-
+        self.sound_manager.register_sound(
+            sound
+        )
         return sound
+
 
     def get_sound(self, name):
         return self.sounds.get(

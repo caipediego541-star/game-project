@@ -1,6 +1,13 @@
 IMAGES = {
     "menu_background": "assets/images/ui/fondos/MainMenuFondo.png",
+
     "fight_background1": "assets/images/ui/fondos/fondo_pelea1.png",
+    "fight_background2": "assets/images/ui/fondos/fondo_pelea2.png",
+    "fight_background3": "assets/images/ui/fondos/fondo_pelea3.png",
+    "fight_background4": "assets/images/ui/fondos/fondo_pelea4.png",
+    "fight_background5": "assets/images/ui/fondos/fondo_pelea5.png",
+    
+
     "bot_background":"assets/images/escenario1.png",
     "tournament_background":"assets/images/escenariotorneo.png",
     "hud": "assets/images/ui/hud.png",
@@ -28,7 +35,15 @@ IMAGES = {
     "boton_dificil": "assets/images/boton_dificil.png",
     "boton_revancha": "assets/images/boton_revancha.png",
     "boton_reiniciar": "assets/images/boton_reiniciar.png",
-    "boton_menu": "assets/images/boton_menu.png"
+    "boton_menu": "assets/images/boton_menu.png",
+
+    "boton_escenario1": "assets/images/boton_escenario1.png",
+    "boton_escenario2": "assets/images/boton_escenario2.png",
+    "boton_escenario3": "assets/images/boton_escenario3.png",
+    "boton_escenario4": "assets/images/boton_escenario4.png",
+    "boton_escenario5": "assets/images/boton_escenario5.png",
+
+    "boton_seleccionar": "assets/images/boton_seleccionar.png"
 }
 
 ITEMS = {

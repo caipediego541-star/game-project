@@ -94,19 +94,18 @@ class VictoryState(State):
             button.draw(screen)
     def revancha(self):
         print("REVANCHA")
-        self.game.player1.reset()
-        if self.game.player2:
-            self.game.player2.reset()
-        self.game.iniciar_pelea(False)
+        if self.game.modo_actual == "vsbot":
+            self.game.iniciar_pelea(True)
+        else:
+            self.game.iniciar_pelea(False)
+        
 
     def reiniciar(self):
         print("REINICIAR")
-        self.game.player1.reset()
-
-        if self.game.player2:
-            self.game.player2.reset()
-            
-        self.game.iniciar_pelea(False)
+        if self.game.modo_actual == "vsbot":
+            self.game.iniciar_pelea(True)
+        else:
+            self.game.iniciar_pelea(False)
     def ir_menu(self):
         print("MENU")
         self.game.state_manager.set_state(

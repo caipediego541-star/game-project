@@ -11,6 +11,8 @@ from patterns.factory.player.human_player_factory import HumanPlayerFactory
 from patterns.factory.player.bot_player_factory import BotPlayerFactory
 
 from patterns.strategy.easy_bot_strategy import EasyBotStrategy
+from patterns.strategy.medium_bot_strategy import MediumBotStrategy
+from patterns.strategy.hard_bot_strategy import HardBotStrategy
 
 
 from core.stage import Stage
@@ -82,22 +84,16 @@ class Game:
         self.factory = HumanPlayerFactory()
         self.question_manager = QuestionManager()
         self.bot_factory = BotPlayerFactory()
-        self.player1 = self.factory.create_player(
-            self,
-            "belen",
-            426,
-            True,
-            "assets/images/personajes/belen.png"
-        )
-
+        self.personaje_jugador = "belen"
+        self.player1 = None
         self.player2 = None
+        self.dificultad_bot = None
+        self.escenario_actual = None
+        self.modo_actual = None
         self.combat_manager = CombatManager()
         self.input_manager = InputManager()
 
-        ControlsConfig.configurar_jugador1(
-            self.input_manager,
-            self.player1
-        )
+        
 
         self.item_factory = ItemFactory(
             self.resource_manager
@@ -153,38 +149,46 @@ class Game:
         self,
         contra_bot=False
     ):
-        if self.player1:
-            self.player1.reset()
-        if self.player2:
-            self.player2.reset()
+        self.player1 = self.factory.create_player(
+            self,self.personaje_jugador,426,
+            True,f"assets/images/personajes/{self.personaje_jugador}.png")
+       
         if contra_bot:
-            estrategia = EasyBotStrategy()
+
+            if self.dificultad_bot == "facil":
+                estrategia = EasyBotStrategy()
+            elif self.dificultad_bot == "medio":
+                estrategia = MediumBotStrategy()
+            elif self.dificultad_bot == "dificil":
+                estrategia = HardBotStrategy()
+            else:
+                estrategia = EasyBotStrategy()
+            if self.personaje_jugador == "belen":
+                personaje_bot = "profe"
+            else:
+                personaje_bot = "belen"
             self.player2 = self.bot_factory.create_player(
-                self,
-                "profe",
-                852,
-                self.player1,
-                False,
-                "assets/images/personajes/profe.png",
-                estrategia
-            )
+                self,personaje_bot,852,self.player1,
+                False,f"assets/images/personajes/{personaje_bot}.png",
+                estrategia)
         else:
+            if self.personaje_jugador == "belen":
+                personaje_rival = "profe"
+            else:
+                personaje_rival = "belen"
             self.player2 = self.factory.create_player(
-                self,
-                "profe",
-                852,
-                False,
-                "assets/images/personajes/profe.png"
-            )
+            self,personaje_rival,852,False,
+            f"assets/images/personajes/{personaje_rival}.png")
 
             ControlsConfig.configurar_jugador2(
                 self.input_manager,
                 self.player2
             )
+        ControlsConfig.configurar_jugador1(
+            self.input_manager,self.player1)
 
         self.hud = HUD(
-            self
-        )
+            self)
 
         self.item_manager.items.clear()
         

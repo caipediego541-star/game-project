@@ -4,6 +4,9 @@ from patterns.state.stateBase import State
 from patterns.factory.button_factory import ButtonFactory
 from utils.helpers import scale_image
 from patterns.state.torneoState import TournamentState
+from patterns.state.stageSelectstate import StageSelectState
+from patterns.state.difficultyState import DifficultyState
+from patterns.state.characterSelectState import CharacterSelectState
 
 class GameModeState(State):
 
@@ -90,19 +93,24 @@ class GameModeState(State):
     
     def start_1vs1(self):
         print("1 VS 1")
-        self.game.iniciar_pelea(False)
+        self.game.state_manager.set_state(
+            CharacterSelectState(
+                self.game,"1vs1"))
         
 
     def start_vsbot(self):
         print("VS BOT")
-        self.game.iniciar_pelea(True)
+        self.game.state_manager.set_state(
+            DifficultyState(self.game))
        
 
     def start_torneo(self):
         print("TORNEO")
-        self.game.state_manager.set_state(TournamentState(self.game))
-
+        self.game.state_manager.set_state(
+            CharacterSelectState(
+            self.game,"torneo"))
     def go_back(self):
         print("VOLVER")
         from patterns.state.mainMenuState import MainMenuState
         self.game.state_manager.set_state(MainMenuState(self.game))
+    

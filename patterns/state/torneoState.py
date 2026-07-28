@@ -36,13 +36,19 @@ class TournamentState(State):
 
     def start(self, game):
         self.repository = TournamentRepository()
+        if game.personaje_jugador == "belen":
+            personaje_rival = "profe"
+            imagen_rival = "assets/images/personajes/profe.png"
+        else:
+            personaje_rival = "belen"
+            imagen_rival = "assets/images/personajes/belen.png"
 
         game.player2 = game.factory.create_player(
             game,
-            "profe",
+            personaje_rival,
             852,
             False,
-            "assets/images/personajes/profe.png"
+            imagen_rival
         )
 
         self.torneo = self.repository.obtener_torneo()

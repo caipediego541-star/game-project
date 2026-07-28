@@ -16,8 +16,7 @@ class FightState(State):
         self.game.fight_state = self
         self.background = (
             self.game.resource_manager.get_image(
-                "fight_background1"
-            )
+                self.game.escenario_actual)
         )
 
 

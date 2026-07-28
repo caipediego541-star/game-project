@@ -221,9 +221,10 @@ class HUD:
     def handle_event(self, event):
 
         if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = self.game.get_mouse_position()
 
             if self.pause_rect.collidepoint(
-                event.pos
+                mouse_pos
             ):
 
                 from patterns.state.pauseState import PauseState

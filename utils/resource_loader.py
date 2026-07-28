@@ -1,5 +1,6 @@
 IMAGES = {
     "menu_background": "assets/images/ui/fondos/MainMenuFondo.png",
+    "fondo_select": "assets/images/ui/fondos/fondo_select.png",
 
     "fight_background1": "assets/images/ui/fondos/fondo_pelea1.png",
     "fight_background2": "assets/images/ui/fondos/fondo_pelea2.png",

@@ -14,10 +14,11 @@ class VictoryState(State):
         self.ganador = ganador
         self.image = None
         
-        self.font = pygame.font.SysFont(
-            "Arial",
-            48
-        )
+        self.font = self.game.resource_manager.get_font(
+                    "pixel",
+                    30
+                )
+        
         self.buttons = []
         # Botón revancha
         imagen_revancha = self.game.resource_manager.get_image(
@@ -81,15 +82,26 @@ class VictoryState(State):
         else:
             mensaje = "PLAYER 2 GANO"
 
-        text = self.font.render(
-            mensaje,
-            True,
-            (255, 255, 255)
-        )
-        screen.blit(
-            text,
-            (150, 100)
-        )
+        texto = self.font.render(
+                        mensaje,
+                        True,
+                        (255,255,255)
+                    )
+        
+        texto_rect = texto.get_rect(
+                center=(
+                    config.ANCHO // 2,
+                    
+                )
+            )
+
+        self.draw_text_with_outline(
+                screen,
+                mensaje,
+                texto_rect,
+                (255,255,255)
+            )  
+             
         for button in self.buttons:
             button.draw(screen)
     def revancha(self):
@@ -110,3 +122,36 @@ class VictoryState(State):
         print("MENU")
         self.game.state_manager.set_state(
         MainMenuState(self.game))
+
+    def draw_text_with_outline(self, screen, text, position, color, outline_color=(0,0,0), outline=3):
+            for x in range(-outline, outline + 1):
+                for y in range(-outline, outline + 1):
+    
+                    if x != 0 or y != 0:
+    
+                        outline_text = self.font.render(
+                            text,
+                            True,
+                            outline_color
+                        )
+    
+                        screen.blit(
+                            outline_text,
+                            (
+                                position[0] + x,
+                                position[1] + y
+                            )
+                        )
+    
+    
+            normal_text = self.font.render(
+                text,
+                True,
+                color
+            )
+    
+            screen.blit(
+                normal_text,
+                position
+            )
+    

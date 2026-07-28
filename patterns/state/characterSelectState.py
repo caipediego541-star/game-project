@@ -17,7 +17,7 @@ class CharacterSelectState(State):
         self.modo = modo
 
         self.background = self.game.resource_manager.get_image(
-            "menu_background"
+            "fondo_select"
         )
 
         self.buttons = []
@@ -31,8 +31,8 @@ class CharacterSelectState(State):
         columna_izquierda = config.ANCHO // 4
         columna_derecha = config.ANCHO * 3 // 4
         fila_personajes = int(config.ALTO * 0.25)
-        fila_botones = int(config.ALTO * 0.65)
-        fila_volver = int(config.ALTO * 0.82)
+        fila_botones = int(config.ALTO * 0.45)
+        fila_volver = int(config.ALTO * 0.72)
 
         imagen_seleccionar = pygame.transform.scale_by(
         self.game.resource_manager.get_image(

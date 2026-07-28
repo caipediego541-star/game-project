@@ -23,8 +23,8 @@ class MainMenuState(State):
         imagen_boton = pygame.transform.scale_by(imagen_boton,0.4)
         separacion = 10
         x_jugar = (config.ANCHO - imagen_boton.get_width()) // 2
-        y_jugar = 180
-        y_opciones = y_jugar + imagen_boton.get_height() + separacion
+        y_jugar = 140
+        y_opciones = y_jugar + imagen_boton.get_height() + separacion - 25
         y_salir = y_opciones + imagen_boton.get_height() + separacion - 70
         self.play_button = ButtonFactory.create_button(
             image=imagen_boton,
@@ -56,9 +56,7 @@ class MainMenuState(State):
             action=self.exit_game
         )
         self.buttons.append(self.exit_button)
-        print("jugar", self.play_button.rect)
-        print("opciones", self.options_button.rect)
-        print("salir", self.exit_button.rect)
+      
 
     def handle_events(self, events):
 

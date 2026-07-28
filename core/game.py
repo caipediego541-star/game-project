@@ -153,6 +153,10 @@ class Game:
         self,
         contra_bot=False
     ):
+        if self.player1:
+            self.player1.reset()
+        if self.player2:
+            self.player2.reset()
         if contra_bot:
             estrategia = EasyBotStrategy()
             self.player2 = self.bot_factory.create_player(

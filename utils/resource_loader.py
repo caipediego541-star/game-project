@@ -18,7 +18,17 @@ IMAGES = {
     "boton_volver": "assets/images/boton_volver.png",
     "boton_musica": "assets/images/boton_musica.png",
     "boton_volumen_mas": "assets/images/boton_volumen_mas.png",
-    "boton_volumen_menos": "assets/images/boton_volumen_menos.png"
+    "boton_volumen_menos": "assets/images/boton_volumen_menos.png",
+    "boton_reanudar": "assets/images/boton_reanudar.png",
+    "boton_reiniciar": "assets/images/boton_reiniciar.png",
+    "boton_menu": "assets/images/boton_menu.png",
+    "boton_revancha": "assets/images/boton_revancha.png",
+    "boton_facil": "assets/images/boton_facil.png",
+    "boton_medio": "assets/images/boton_medio.png",
+    "boton_dificil": "assets/images/boton_dificil.png",
+    "boton_revancha": "assets/images/boton_revancha.png",
+    "boton_reiniciar": "assets/images/boton_reiniciar.png",
+    "boton_menu": "assets/images/boton_menu.png"
 }
 
 ITEMS = {

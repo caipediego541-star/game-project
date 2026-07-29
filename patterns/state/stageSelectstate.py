@@ -22,16 +22,17 @@ class StageSelectState(State):
         ancho_imagen = int(config.ANCHO * 0.20)
         alto_imagen = int(config.ALTO * 0.14)
 
-        self.imagen_escenario = pygame.transform.scale(
-            self.game.resource_manager.get_image("fight_background1"),
-            (ancho_imagen, alto_imagen)
-        )
+        #fondos de en escenarios:
 
-        self.imagen_escenario = agregar_margen_negro(
-            self.imagen_escenario,
-            4
-        )
-
+        self.imagenes_escenarios = []
+        for i in range(1, 6):
+            imagen = pygame.transform.scale(
+                self.game.resource_manager.get_image(
+                    f"fight_background{i}"),
+                    (ancho_imagen, alto_imagen))
+            imagen = agregar_margen_negro(
+                imagen,4)
+            self.imagenes_escenarios.append(imagen)
         # Posiciones
         fila1 = int(config.ALTO * 0.35)
         fila2 = int(config.ALTO * 0.68)
@@ -205,21 +206,23 @@ class StageSelectState(State):
             fondo,
             (x, y)
         )
-
-        for boton in [
+        #botones
+        botones = [
             self.button_escenario1,
             self.button_escenario2,
             self.button_escenario3,
             self.button_escenario4,
-            self.button_escenario5
-        ]:
-            screen.blit(
-                self.imagen_escenario,
-                (
-                    boton.rect.centerx - self.imagen_escenario.get_width() // 2,
-                    boton.rect.top - self.imagen_escenario.get_height() - 10
-                )
-            )
+            self.button_escenario5]
+        for boton, imagen in zip(
+            botones,
+            self.imagenes_escenarios):
+            screen.blit(imagen,(
+                boton.rect.centerx - imagen.get_width() // 2,
+                boton.rect.top - imagen.get_height() - 10
+            ))
+
+
+        
 
         for button in self.buttons:
             button.draw(screen)

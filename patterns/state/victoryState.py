@@ -90,7 +90,7 @@ class VictoryState(State):
         
         texto_rect = texto.get_rect(
                 center=(
-                    config.ANCHO // 2,
+                    config.ANCHO // 2,100
                     
                 )
             )
@@ -120,6 +120,9 @@ class VictoryState(State):
             self.game.iniciar_pelea(False)
     def ir_menu(self):
         print("MENU")
+        self.game.sound_manager.play_music(
+            "assets/sounds/menu_music.mp3")
+
         self.game.state_manager.set_state(
         MainMenuState(self.game))
 

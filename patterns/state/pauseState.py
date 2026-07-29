@@ -120,6 +120,9 @@ class PauseState(State):
            
     def ir_menu(self):
         print("MENU")
-        
+
+        self.game.sound_manager.play_music(
+            "assets/sounds/menu_music.mp3")
+
         self.game.state_manager.set_state(
         MainMenuState(self.game))

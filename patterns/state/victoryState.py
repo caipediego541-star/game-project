@@ -5,6 +5,7 @@ from patterns.factory.button_factory import ButtonFactory
 from patterns.state.mainMenuState import MainMenuState
 
 
+
 class VictoryState(State):
 
     def __init__(self, game, ganador):
@@ -106,16 +107,33 @@ class VictoryState(State):
             button.draw(screen)
     def revancha(self):
         print("REVANCHA")
-        if self.game.modo_actual == "vsbot":
+        print(self.game.modo_actual)
+
+        if self.game.modo_actual == "torneo":
+            from patterns.state.characterSelectState import CharacterSelectState
+            self.game.state_manager.set_state(
+             CharacterSelectState(self.game, "torneo")
+        )
+
+        elif self.game.modo_actual == "vsbot":
             self.game.iniciar_pelea(True)
+
         else:
             self.game.iniciar_pelea(False)
         
 
     def reiniciar(self):
         print("REINICIAR")
-        if self.game.modo_actual == "vsbot":
+        print(self.game.modo_actual)
+        if self.game.modo_actual == "torneo":
+            from patterns.state.characterSelectState import CharacterSelectState
+            self.game.state_manager.set_state(
+                CharacterSelectState(self.game, "torneo")
+            )
+
+        elif self.game.modo_actual == "vsbot":
             self.game.iniciar_pelea(True)
+
         else:
             self.game.iniciar_pelea(False)
     def ir_menu(self):

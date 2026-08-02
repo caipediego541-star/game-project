@@ -1,13 +1,13 @@
 from database.connection import DatabaseConnection
 
+
 class TournamentRepository:
+
     def __init__(self):
-        self.connection = (
-            DatabaseConnection.get_connection()
-        )
+        self.connection = DatabaseConnection.get_connection()
 
+    def crear_torneo(self, jugador1, jugador2):
 
-    def crear_torneo(self, jugador1, jugador2 ):
         cursor = self.connection.cursor()
 
         sql = """
@@ -30,18 +30,25 @@ class TournamentRepository:
             'EN_CURSO'
         )
         """
+
         cursor.execute(
             sql,
             (
                 jugador1,
                 jugador2
-            ))
+            )
+        )
 
         self.connection.commit()
+
+        id_torneo = cursor.lastrowid
+
         cursor.close()
-        return cursor.lastrowid
+
+        return id_torneo
 
     def obtener_torneo(self):
+
         cursor = self.connection.cursor(
             dictionary=True
         )
@@ -54,23 +61,34 @@ class TournamentRepository:
             LIMIT 1
             """
         )
+
         torneo = cursor.fetchone()
+
         cursor.close()
+
         return torneo
 
-    def actualizar_torneo(self, id_torneo, victorias_jugador1, victorias_jugador2, ronda_actual, estado):
+    def actualizar_torneo(
+        self,
+        id_torneo,
+        victorias_jugador1,
+        victorias_jugador2,
+        ronda_actual,
+        estado
+    ):
+
         cursor = self.connection.cursor()
+
         sql = """
         UPDATE torneo
-
         SET
             victorias_jugador1 = %s,
             victorias_jugador2 = %s,
             ronda_actual = %s,
             estado = %s
-
         WHERE id = %s
         """
+
         cursor.execute(
             sql,
             (
@@ -79,11 +97,15 @@ class TournamentRepository:
                 ronda_actual,
                 estado,
                 id_torneo
-            ))
+            )
+        )
+
         self.connection.commit()
+
         cursor.close()
 
     def finalizar_torneo(self, id_torneo):
+
         cursor = self.connection.cursor()
 
         cursor.execute(
@@ -94,13 +116,17 @@ class TournamentRepository:
             """,
             (
                 id_torneo,
-            ))
+            )
+        )
+
         self.connection.commit()
+
         cursor.close()
 
-
     def eliminar_torneo(self, id_torneo):
+
         cursor = self.connection.cursor()
+
         cursor.execute(
             """
             DELETE FROM torneo
@@ -108,7 +134,27 @@ class TournamentRepository:
             """,
             (
                 id_torneo,
-            ))
+            )
+        )
 
         self.connection.commit()
+
         cursor.close()
+
+    def hay_torneo_pendiente(self):
+
+        cursor = self.connection.cursor()
+
+        cursor.execute(
+            """
+            SELECT COUNT(*)
+            FROM torneo
+            WHERE estado = 'EN_CURSO'
+            """
+        )
+
+        existe = cursor.fetchone()[0] > 0
+
+        cursor.close()
+
+        return existe

@@ -29,6 +29,8 @@ from patterns.factory.item.item_factory import ItemFactory
 from patterns.singleton.sound_manager import SoundManager
 from ui.hud import HUD
 
+from Tournament_save import TournamentSaveManager
+
 class Game:
    
     def __init__(self):

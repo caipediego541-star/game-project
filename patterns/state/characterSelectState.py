@@ -8,6 +8,9 @@ from patterns.state.stageSelectstate import StageSelectState
 from patterns.state.torneoState import TournamentState
 from core.control_config import ControlsConfig
 
+from patterns.repository.tournament_repository import TournamentRepository
+from patterns.state.loadTournamentState import LoadTournamentState
+
 class CharacterSelectState(State):
 
     def __init__(self, game, modo):
@@ -73,8 +76,6 @@ class CharacterSelectState(State):
 
     def seleccionar_profesor(self):
 
-        print("PROFESOR SELECCIONADO")
-
         self.game.personaje_jugador = "profe"
 
         self.continuar()
@@ -87,8 +88,26 @@ class CharacterSelectState(State):
             ControlsConfig.configurar_jugador1(
                 self.game.input_manager,self.game.player1)
             
-            self.game.state_manager.set_state(
-                TournamentState(self.game))
+            repository = TournamentRepository()
+
+            torneo = repository.obtener_torneo()
+
+            if torneo:
+
+                self.game.state_manager.set_state(
+                    LoadTournamentState(
+                        self.game,
+                        torneo
+                    )
+                )
+
+            else:
+
+                self.game.state_manager.set_state(
+                    TournamentState(
+                        self.game, 
+                    )
+                )
         else:
             self.game.state_manager.set_state(
                 StageSelectState(

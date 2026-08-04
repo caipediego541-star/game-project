@@ -113,14 +113,14 @@ class OptionsState(State):
 
     def volume_up(self):
         self.sound_manager.volume_up()
-        volumen = round(self.sound_manager.volume * 100)
+        volumen = round(self.sound_manager.music_volume * 100)
         self.message = f"VOLUMEN: {volumen} %"
         self.message_timer = 120
 
 
     def volume_down(self):
        self.sound_manager.volume_down()
-       volumen = round(self.sound_manager.volume * 100)
+       volumen = round(self.sound_manager.music_volume * 100)
        self.message = f"VOLUMEN: {volumen} %"
        self.message_timer = 120
        

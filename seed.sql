@@ -1,1 +1,0 @@
-# datos iniciales para la base de d

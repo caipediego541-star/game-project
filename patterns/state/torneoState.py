@@ -1,3 +1,5 @@
+from turtle import reset
+
 import pygame
 import config
 
@@ -27,15 +29,20 @@ class TournamentState(State):
 
         self.player1_lives = 2
         self.player2_lives = 2
-        self.repository = None
+        self.repository = TournamentRepository()
         self.torneo = None
         self.torneo_id = None
 
         self.combat = CombatController(game)
         self.question_box = QuestionBox(game)
+        self.fondos= ["fight_background1",
+                       "fight_background3",
+                       "fight_background4",
+                       "fight_background5",
+                       "fight_background2"]
 
-    def start(self, game):
-        self.repository = TournamentRepository()
+    def start(self, game, reset=False):
+
         if game.personaje_jugador == "belen":
             personaje_rival = "profe"
             imagen_rival = "assets/images/personajes/profe.png"
@@ -50,19 +57,28 @@ class TournamentState(State):
             False,
             imagen_rival
         )
-
+            
         self.torneo = self.repository.obtener_torneo()
         if self.torneo:
-            self.torneo_id = self.torneo["id"]
-            self.player1_score = (
-                self.torneo["victorias_jugador1"]
-            )
-            self.player2_score = (
-                self.torneo["victorias_jugador2"]
-            )
-            self.round = (
-                self.torneo["ronda_actual"]
-            )
+            if reset:
+                self.repository.reiniciar_torneo(self.torneo["id"])
+                self.torneo_id = self.torneo["id"]
+                self.player1_score = 0
+                self.player2_score = 0
+                self.player1_lives = 2
+                self.player2_lives = 2
+                self.round = 1
+            else:  
+                self.torneo_id = self.torneo["id"]
+                self.player1_score = (
+                    self.torneo["victorias_jugador1"]
+                )
+                self.player2_score = (
+                    self.torneo["victorias_jugador2"]
+                )
+                self.round = (
+                    self.torneo["ronda_actual"]
+                )
         else:
             self.torneo_id = self.repository.crear_torneo(
                 game.player1.character,
@@ -77,7 +93,7 @@ class TournamentState(State):
         game.hud = HUD(game)
 
         self.background = game.resource_manager.get_image(
-            "tournament_background"
+            self.fondos[self.round - 1]
         )
 
         self.combat.start_music()
@@ -159,7 +175,10 @@ class TournamentState(State):
        self.combat.reset_round()
 
     def draw(self, screen):
-
+        self.background = self.game.resource_manager.get_image(
+                    self.fondos[self.round - 1]
+                )
+        
         fondo = pygame.transform.scale(
             self.background,
             (

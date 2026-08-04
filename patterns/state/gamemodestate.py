@@ -7,6 +7,7 @@ from patterns.state.torneoState import TournamentState
 from patterns.state.stageSelectstate import StageSelectState
 from patterns.state.difficultyState import DifficultyState
 from patterns.state.characterSelectState import CharacterSelectState
+from patterns.state.loadTournamentState import LoadTournamentState
 
 class GameModeState(State):
 
@@ -107,10 +108,12 @@ class GameModeState(State):
     def start_torneo(self):
         print("TORNEO")
         self.game.state_manager.set_state(
-            CharacterSelectState(
-            self.game,"torneo"))
+            CharacterSelectState(self.game, "torneo"))
     def go_back(self):
         print("VOLVER")
         from patterns.state.mainMenuState import MainMenuState
         self.game.state_manager.set_state(MainMenuState(self.game))
+
+        #CharacterSelectState(
+                    #self.game,"torneo")
     

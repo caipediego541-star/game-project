@@ -1,17 +1,23 @@
+from patterns.state.torneoState import TournamentState
+
+
 class StateManager:
 
     def __init__(self):
         self.current_state = None
         self.previous_state = None
 
-    def set_state(self, state):
+    def set_state(self, state, reset=False):
         if self.current_state:
             self.previous_state = self.current_state
 
         self.current_state = state
 
         if hasattr(self.current_state, "start"):
-            self.current_state.start(self.current_state.game)
+            if isinstance(self.current_state, TournamentState):
+                self.current_state.start(self.current_state.game, reset)
+            else:
+                self.current_state.start(self.current_state.game)
 
         if hasattr(self.current_state, "enter"):
             self.current_state.enter()

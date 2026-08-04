@@ -369,7 +369,7 @@ class Player:
 
         self.has_hit = False
         self.busy = True
-        self.attack_cooldown = 60
+        self.attack_cooldown = 30
 
 
         self.change_animation(
@@ -394,7 +394,7 @@ class Player:
 
         self.has_hit = False
         self.busy = True
-        self.attack_cooldown = 60
+        self.attack_cooldown = 30
 
 
         self.change_animation(
@@ -462,13 +462,11 @@ class Player:
             self.blocking
         )
 
-
         if damage == 0:
             return 0
 
 
         if self.health.dead:
-
             self.busy = True
             self.blocking = False
 
@@ -476,16 +474,12 @@ class Player:
                 "derrota"
             )
 
-
             self.game.resource_manager.get_sound(
                 f"{self.character}_derrota"
             ).play()
 
-
         else:
-
             if change:
-
                 self.change_animation(
                     "recibir_golpe"
                 )
@@ -498,8 +492,6 @@ class Player:
 
         return damage
 
-
-
     def is_finished(self):
 
         return self.animation.get_current_animation() in [
@@ -507,14 +499,13 @@ class Player:
             "derrota"
         ]
 
-
-
     def reset(self):
 
         self.x = self.spawn_x
         self.y = self.ground
 
         self.facing_right = self.spawn_facing_right
+        self.health.reset()
 
         self.reset_state()
 

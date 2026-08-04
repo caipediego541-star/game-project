@@ -18,8 +18,8 @@ class SoundManager:
         if self.initialized:
             return
 
-        self.volume = 0.5
-        self.sound_volume = 1.0
+        self.music_volume = 0.4
+        self.sound_volume = 2
         self.music_on = True
 
         self.sounds = []
@@ -33,7 +33,7 @@ class SoundManager:
 
         pygame.mixer.music.load(path)
         pygame.mixer.music.set_volume(
-            self.volume
+            self.music_volume
         )
         pygame.mixer.music.play(-1)
 
@@ -41,11 +41,11 @@ class SoundManager:
         self.music_on = not self.music_on
         if self.music_on:
             pygame.mixer.music.set_volume(
-                self.volume
+                self.music_volume
             )
             for sound in self.sounds:
                 sound.set_volume(
-                    self.volume
+                    self.sound_volume
                 )
 
         else:
@@ -54,29 +54,29 @@ class SoundManager:
                 sound.set_volume(0)
 
     def volume_up(self):
-        self.volume += 0.1
+        self.music_volume += 0.1
 
-        if self.volume > 1:
-            self.volume = 1
+        if self.music_volume > 1:
+            self.music_volume = 1
 
         self.update_volume()
 
 
     def volume_down(self):
 
-        self.volume = round(self.volume - 0.1, 2)
+        self.music_volume = round(self.music_volume - 0.1, 2)
 
-        if self.volume < 0:
-            self.volume = 0
+        if self.music_volume < 0:
+            self.music_volume = 0
 
         self.update_volume()
 
     def set_volume(self, volume):
         pygame.mixer.music.set_volume(volume)
-        self.volume = volume
+        self.music_volume = volume
 
     def get_volume(self):
-        return self.volume
+        return self.music_volume
 
     def is_music_on(self):
         return self.music_on
@@ -92,7 +92,7 @@ class SoundManager:
             path
         )
         pygame.mixer.music.set_volume(
-            self.volume
+            self.music_volume
         )
         pygame.mixer.music.play(-1)
 
@@ -104,7 +104,7 @@ class SoundManager:
 
     def play_sound_loop(self, sound):
         sound.set_volume(
-            self.volume
+            self.sound_volume
         )
 
         sound.play(-1)
@@ -114,11 +114,11 @@ class SoundManager:
 
     def update_volume(self):
         pygame.mixer.music.set_volume(
-        self.volume)
+        self.music_volume)
 
         for sound in self.sounds:
             sound.set_volume(
-                self.volume
+                self.sound_volume
             )
 
     def register_sound(self, sound):

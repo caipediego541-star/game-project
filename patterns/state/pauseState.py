@@ -100,15 +100,15 @@ class PauseState(State):
         for button in self.buttons:
             button.draw(screen)
     def reanudar(self):
-        print("REANUDAR")
+
         self.game.state_manager.return_previous_state()
     def reiniciar(self):
-        print("REINICIAR")
+
         estado = self.game.state_manager.previous_state
         from patterns.state.fightState import FightState
         from patterns.state.torneoState import TournamentState
         if isinstance(estado, FightState):
-            print("REINICIAR PELEA")
+
             self.game.state_manager.previous_state = None
             # Detectar si era bot
             if hasattr(self.game.player2, "bot_controller"):
@@ -116,10 +116,36 @@ class PauseState(State):
             else:
                 self.game.iniciar_pelea(False)
         elif isinstance(estado, TournamentState):
-            print("REINICIAR TORNEO")
-           
-    def ir_menu(self):
-        print("MENU")
-        
+
+            from patterns.repository.tournament_repository import TournamentRepository
+
+            repository = TournamentRepository()
+
+            torneo = repository.obtener_torneo()
+
+            if torneo:
+                repository.eliminar_torneo(torneo["id"])
+
+            self.game.state_manager.previous_state = None
+
+            self.game.state_manager.set_state(
+                TournamentState(self.game)
+            )
+
+            return
+
+        self.game.sound_manager.play_music(
+            "assets/sounds/menu_music.mp3")
+
         self.game.state_manager.set_state(
         MainMenuState(self.game))
+
+    def ir_menu(self):
+
+        self.game.sound_manager.play_music(
+            "assets/sounds/menu_music.mp3"
+        )
+
+        self.game.state_manager.set_state(
+            MainMenuState(self.game)
+        )

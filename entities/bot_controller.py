@@ -47,6 +47,7 @@ class BotController:
             self.move_towards_enemy()
             return
 
+        self.bot.stop_move()
 
         self.timer += 1
 

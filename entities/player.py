@@ -513,6 +513,7 @@ class Player:
 
     def reset_state(self):
 
+        self.stop_move()
         self.busy = False
         self.blocking = False
         self.has_hit = False

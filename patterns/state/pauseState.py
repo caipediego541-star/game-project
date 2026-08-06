@@ -115,6 +115,8 @@ class PauseState(State):
                 self.game.iniciar_pelea(True)
             else:
                 self.game.iniciar_pelea(False)
+            return
+
         elif isinstance(estado, TournamentState):
 
             from patterns.repository.tournament_repository import TournamentRepository
@@ -134,11 +136,6 @@ class PauseState(State):
 
             return
 
-        self.game.sound_manager.play_music(
-            "assets/sounds/menu_music.mp3")
-
-        self.game.state_manager.set_state(
-        MainMenuState(self.game))
 
     def ir_menu(self):
 

@@ -1,4 +1,4 @@
-from patterns.factory.button import Button
+from entities.button import Button
 
 
 class ButtonFactory:

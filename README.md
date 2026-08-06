@@ -81,3 +81,29 @@ pip install -r requirements.txt
 ```bash
 python main.py
 ```
+### 5. Capturas del juego
+
+## Menú peleas
+![Menú peleas](assets/capturas/menu_pelea.png)
+
+## Cargar Torneo
+![Cargar Torneo](assets/capturas/cargar_torneo.png)
+
+## Menu de dificultad
+![Bot Dificultad](assets/capturas/dificultad_bot.png)
+
+## Menu Pausa
+![Menu pausa](assets/capturas/menu_pausa.png)
+
+## Seleccion personajes
+![Elegir Personajes](assets/capturas/menu_seleccion.png)
+
+## Torneo
+![Torneo](assets/capturas/torneo.png)
+
+## Seleccion de mapa
+![Elejir mapa](assets/capturas/seleccion_mapa.png)
+
+
+
+

@@ -83,6 +83,18 @@ python main.py
 ```
 ### 5. Capturas del juego
 
+## MENU PRINCIPAL
+![Menú Principal](assets/capturas/menuPrincipal.png)
+## opciones
+![Opciones](assets/capturas/opciones.png)
+## Musica activada
+![Musica activada](assets/capturas/musicaActivada.png)
+## Musica desactivada
+![Musica desactivada](assets/capturas/musicaDesactivada.png)
+## Bajar volumen
+![Bajar volumen](assets/capturas/bajarVolumen.png)
+## Subir volumen
+![Subir volumen](assets/capturas/subirVolumen.png)
 ## Menú peleas
 ![Menú peleas](assets/capturas/menu_pelea.png)
 

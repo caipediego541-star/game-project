@@ -80,6 +80,7 @@ class CharacterSelectState(State):
         self.continuar()
     def continuar(self):
         if self.modo == "torneo":
+            self.game.modo_actual = "torneo"
             self.game.player1 = self.game.factory.create_player(
                 self.game,self.game.personaje_jugador,426,True,
                 f"assets/images/personajes/{self.game.personaje_jugador}.png")

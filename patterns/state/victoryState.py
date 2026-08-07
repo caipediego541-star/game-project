@@ -108,7 +108,6 @@ class VictoryState(State):
         for button in self.buttons:
             button.draw(screen)
     def revancha(self):
-        print("REVANCHA")
         print(self.game.modo_actual)
 
         if self.game.modo_actual == "torneo":
@@ -125,8 +124,6 @@ class VictoryState(State):
         
 
     def reiniciar(self):
-        print("REINICIAR")
-        print(self.game.modo_actual)
         if self.game.modo_actual == "torneo":
             from patterns.state.characterSelectState import CharacterSelectState
             self.game.state_manager.set_state(

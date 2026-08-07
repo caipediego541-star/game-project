@@ -1,6 +1,7 @@
 import pygame
 import config
 
+from patterns.state import characterSelectState
 from patterns.state.stateBase import State
 from patterns.factory.button_factory import ButtonFactory
 from utils.helpers import scale_image, agregar_margen_negro
@@ -260,11 +261,10 @@ class StageSelectState(State):
 
     def go_back(self):
         print("VOLVER")
-        from patterns.state.gamemodestate import GameModeState
+        from patterns.state.characterSelectState import CharacterSelectState
 
         self.game.state_manager.set_state(
-            GameModeState(self.game)
-        )
+            CharacterSelectState(self.game,self.modo))
 
 
     def iniciar_modo(self):

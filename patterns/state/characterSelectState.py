@@ -4,7 +4,6 @@ import config
 from patterns.state.stateBase import State
 from patterns.factory.button_factory import ButtonFactory
 from utils.helpers import scale_image
-from patterns.state.stageSelectstate import StageSelectState
 from patterns.state.torneoState import TournamentState
 from core.control_config import ControlsConfig
 
@@ -109,17 +108,20 @@ class CharacterSelectState(State):
                     )
                 )
         else:
+            from patterns.state.stageSelectstate import StageSelectState
             self.game.state_manager.set_state(
                 StageSelectState(
                     self.game,self.modo))
 
     def volver(self):
-
-        from patterns.state.gamemodestate import GameModeState
-
-        self.game.state_manager.set_state(
-            GameModeState(self.game)
-        )
+        if self.modo == "vsbot":
+            from patterns.state.difficultyState import DifficultyState
+            self.game.state_manager.set_state(
+                DifficultyState(self.game))
+        else: 
+            from patterns.state.gamemodestate import GameModeState
+            self.game.state_manager.set_state(
+                GameModeState(self.game))
 
 
     def handle_events(self, events):

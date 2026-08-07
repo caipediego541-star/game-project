@@ -83,37 +83,102 @@ python main.py
 # Capturas del juego
 
 ## MENU PRINCIPAL
+Al iniciar el juego se muestra el menú principal, desde el cual el jugador puede acceder a las distintas funcionalidades del juego.
+las opciones que muestra son:
+-Jugar: accede a los diferentes modos de juego.
+-Opciones: configuración de música y sonido
+-Salir: cierra el juego.
+
 ![Menú Principal](assets/capturas/menuPrincipal.png)
 ## opciones
+Cuando entramos a opciones nos ingresa a la configuracion de musica y sonido.
+en donde tenemos opciones como musica on/off,subir volumen,bajar volumen o volver al menú principal.
 ![Opciones](assets/capturas/opciones.png)
-## Musica activada
-![Musica activada](assets/capturas/musicaActivada.png)
-## Musica desactivada
+
+### Musica ON/FF
+Al seleccionar musica on/offf,se muestra un mensaje indicando si la musica fue activada o desactivada:
 ![Musica desactivada](assets/capturas/musicaDesactivada.png)
-## Bajar volumen
+![Musica activada](assets/capturas/musicaActivada.png)
+
+### Bajar volumen
+Al seleccionar volumen-,el volumen disminuye en un 10 % por cada vez que se presiona la opción.
 ![Bajar volumen](assets/capturas/bajarVolumen.png)
-## Subir volumen
+### Subir volumen
+Al seleccionar volumen+, el volumen de la música aumenta en un 10 % por cada vez que se presiona la opción.
 ![Subir volumen](assets/capturas/subirVolumen.png)
 ## Menú peleas
+Al seleccionar Jugar, el usuario accede al menú de modos de juego, donde puede elegir la modalidad de combate que desea iniciar o regresar al menú principal.
 ![Menú peleas](assets/capturas/menu_pelea.png)
 
-## Cargar Torneo
-![Cargar Torneo](assets/capturas/cargar_torneo.png)
+1VS1:
+Flujo del modo:
+## Selección de personajes:
+-Puede seleccionar el personaje para la pelea o puede volver al menu de peleas
+![Elegir Personajes](assets/capturas/menu_seleccion.png)
+## Selección de mapa: 
+-Puede seleccionar el mapa para la pelea o puede volver al menu de peleas
+![Elejir mapa](assets/capturas/seleccion_mapa.png)
+## Inicio del combate:
+![Inicio combate](assets/capturas/inicioCombate.png)
+## Menú pausa
 
-## Menú de dificultad
-![Bot Dificultad](assets/capturas/dificultad_bot.png)
+Durante el combate, el jugador puede acceder al menú de pausa, disponible en los diferentes modos de juego.
 
-## Menú Pausa
+- Reanudar: cierra el menú pausa y continúa la pelea
+actual.
+- Reiniciar: reinicia el combate desde el inicio.
+- Menú: regresa al menú principal.
 ![Menu pausa](assets/capturas/menu_pausa.png)
 
-## Selección personajes
+
+VSBOT:
+Flujo del modo:
+## Selección de dificultad del bot:
+![Bot Dificultad](assets/capturas/dificultad_bot.png)
+## Selección de personajes:
 ![Elegir Personajes](assets/capturas/menu_seleccion.png)
-
-## Torneo
-![Torneo](assets/capturas/torneo.png)
-
-## Selección de mapa
+## Selección de mapa:
 ![Elejir mapa](assets/capturas/seleccion_mapa.png)
+## Inicio del combate:
+![Inicio combate](assets/capturas/inicioCombate.png)
+## Menú pausa
+Durante el combate, el jugador puede acceder al menú de pausa, disponible en los diferentes modos de juego.
+
+- Reanudar: cierra el menú pausa y continúa la pelea
+actual.
+- Reiniciar: reinicia el combate desde el inicio.
+- Menú: regresa al menú principal.
+![Menu pausa](assets/capturas/menu_pausa.png)
+
+TORNEO:
+Flujo del modo:
+## Selección de personajes:
+![Elegir Personajes](assets/capturas/menu_seleccion.png)
+## Verificación de torneo pendiente.
+![Cargar Torneo](assets/capturas/cargar_torneo.png)
+## Inicio del torneo:
+![Torneo](assets/capturas/torneo.png)
+## Menú pausa
+Durante el combate, el jugador puede acceder al menú de pausa, disponible en los diferentes modos de juego.
+
+- Reanudar: cierra el menú pausa y continúa la pelea
+actual.
+- Reiniciar: reinicia el combate desde el inicio.
+- Menú: regresa al menú principal.
+![Menu pausa](assets/capturas/menu_pausa.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Base de datos
 

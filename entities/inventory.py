@@ -48,7 +48,8 @@ class Inventory:
                 "usar_item"
             ).play()
 
-        return mensaje.upper()
+            return mensaje.upper()
+        return ""
     
     def get_items(self):
         return self.slots

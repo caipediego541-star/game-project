@@ -88,25 +88,26 @@ class CombatController:
                 jugador1
             )
 
-    def finalizar_combate(self, ganador):
+    def finalizar_combate(self, ganador= None):
 
         self.combate_terminado = True
-
         self.ganador = ganador
 
-        ganador.busy = True
-        ganador.blocking = False
-        ganador.hitbox.desactivar()
-
-
         self.game.sound_manager.change_music(
-            "assets/sounds/victoria.mp3",
-            1000
-        )
+                        "assets/sounds/victoria.mp3",
+                        1000
+                    )
+        
+        if ganador:
 
-        ganador.change_animation(
-            "victoria", force= True
-        )
+            ganador.busy = True
+            ganador.blocking = False
+            ganador.hitbox.desactivar()
+
+            ganador.change_animation(
+                "victoria",
+                force=True
+            )
 
     def draw(self, screen):
 
@@ -143,7 +144,7 @@ class CombatController:
             ganador = self.game.player2
 
         else:
-            ganador = self.game.player1  # empate temporalmente
+            ganador = None
 
 
         self.finalizar_combate(

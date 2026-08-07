@@ -80,8 +80,10 @@ class VictoryState(State):
         if self.ganador == self.game.player1:
             mensaje = "PLAYER 1 GANO"
 
-        else:
+        elif self.ganador == self.game.player2:
             mensaje = "PLAYER 2 GANO"
+        else:
+            mensaje = "EMPATE"
 
         texto = self.font.render(
                         mensaje,

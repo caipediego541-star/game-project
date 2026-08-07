@@ -10,4 +10,5 @@ class DamageDecorator(ItemDecorator):
         player.damage_timer = (
             10 * 60
         )
-        print(f"{player.character} tiene daño aumentado")
+        mensaje= f"{player.damage} puntos de ataque"
+        return mensaje

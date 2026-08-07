@@ -41,12 +41,14 @@ class Inventory:
         )
 
         if item:
-            item.use(
+            mensaje= item.use(
                 player
             )
             player.game.resource_manager.get_sound(
                 "usar_item"
             ).play()
 
+        return mensaje.upper()
+    
     def get_items(self):
         return self.slots

@@ -10,7 +10,7 @@ class QuestionBox:
 
         self.active = False
         self.bot_timer = 0
-        self.bot_delay = 120 
+        self.bot_delay = 240 
 
         self.item = None
         self.player_attacker = None
@@ -66,8 +66,8 @@ class QuestionBox:
         )
 
         self.buttons = []
-        self.time_limit = 5
-        self.time_left = 5
+        self.time_limit = 8
+        self.time_left = 8
         self.timer_counter = 0
 
         self.timer_font = self.game.resource_manager.get_font(

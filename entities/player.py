@@ -15,6 +15,8 @@ class Player:
         self.character = character
         self.game = game
         self.is_bot = False
+        self.mensaje_item = ""
+        self.mensaje_item_timer = 0
 
         self.profile_picture = pygame.image.load(
             profile_picture

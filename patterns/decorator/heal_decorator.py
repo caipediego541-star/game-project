@@ -9,7 +9,5 @@ class HealDecorator(ItemDecorator):
         player.health.heal(
             curacion
         )
-
-        print(
-            f"{player.character} recuperó {curacion} de vida"
-        )
+        mensaje= f"mas {curacion} de vida"
+        return mensaje

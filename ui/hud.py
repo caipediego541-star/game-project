@@ -1,5 +1,6 @@
 import pygame
 import config
+from entities import player
 from ui.barra_vida import BarraVida
 
 class HUD:
@@ -87,6 +88,11 @@ class HUD:
             30
         )
 
+        self.font_item = self.game.resource_manager.get_font(
+            "pixel",
+            10
+        )
+
     def draw(self, screen):
 
         screen.blit(
@@ -140,6 +146,16 @@ class HUD:
             screen,
             self.game.player2,
             self.inventario2_pos
+        )
+
+        self.draw_item_message(
+            screen,
+            self.game.player1
+        )
+
+        self.draw_item_message(
+            screen,
+            self.game.player2
         )
 
         screen.blit(
@@ -289,3 +305,43 @@ class HUD:
                 texto_rect,
                 (255,255,255)
             )
+
+    def draw_item_message(self, screen, player):
+
+        if player.mensaje_item_timer <= 0:
+            return
+
+        player.mensaje_item_timer -= 1
+
+        texto = self.font_item.render(
+            player.mensaje_item,
+            True,
+            (255, 255, 255)
+        )
+
+        texto_rect = texto.get_rect(
+            center=(
+                config.ANCHO // 2,
+                config.ALTO // 2
+            )
+        )
+
+        for x in range(-2, 3):
+            for y in range(-2, 3):
+                if x != 0 or y != 0:
+                    screen.blit(
+                        self.font_item.render(
+                            player.mensaje_item,
+                            True,
+                            (0, 0, 0)
+                        ),
+                        (
+                            texto_rect.x + x,
+                            texto_rect.y + y
+                        )
+                    )
+
+        screen.blit(
+            texto,
+            texto_rect
+        )

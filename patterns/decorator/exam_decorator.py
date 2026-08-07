@@ -12,3 +12,5 @@ class ExamDecorator(ItemDecorator):
             self.item.materia,
             player,
             enemy)
+        mensaje= ""
+        return mensaje

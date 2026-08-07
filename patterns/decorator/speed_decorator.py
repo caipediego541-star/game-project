@@ -12,4 +12,5 @@ class SpeedDecorator(ItemDecorator):
         player.speed_timer = (
             15 * 60
         )
-        print( f"{player.character} tiene velocidad aumentada")
+        mensaje = f"{player.character} tiene velocidad aumentada"
+        return mensaje

@@ -1,6 +1,6 @@
 from ui.hud import HUD
 
-from patterns.game_mode.game_mode import GameMode
+from core.game_mode.game_mode import GameMode
 from patterns.state.fightState import FightState
 from patterns.strategy.hard_bot_strategy import HardBotStrategy
 
